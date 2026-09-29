@@ -54,6 +54,13 @@ const config: Configuration = {
     port: 8080,
     hot: true,
     historyApiFallback: true,
+    proxy: [
+      {
+        context: ['/api'],
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+    ],
   },
 };
 
