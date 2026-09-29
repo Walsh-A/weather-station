@@ -1,5 +1,13 @@
 # Home Station
 
+## Run locally
+
+Install dependencies with `bun install`, then start the development server with `bun run dev`.
+Open [http://localhost:8080](http://localhost:8080) to see the app.
+
+Run `bun run build` to create a production bundle, `bun run typecheck` to check TypeScript, and
+`bun run format:check` to verify formatting.
+
 **Your world, at a glance.**
 
 Home Station is an always-on, home information dashboard designed to display relevant news, alerts, and activity happening in your local area.

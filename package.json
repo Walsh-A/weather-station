@@ -1,0 +1,27 @@
+{
+  "name": "home-station",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "rspack serve --mode development",
+    "build": "rspack build --mode production",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write \"client/**/*.{ts,tsx,css}\" \"public/**/*.{html,css}\" \"*.json\" \"*.md\" \"*.ts\"",
+    "format:check": "prettier --check \"client/**/*.{ts,tsx,css}\" \"public/**/*.{html,css}\" \"*.json\" \"*.md\" \"*.ts\""
+  },
+  "dependencies": {
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "@rspack/cli": "2.1.10",
+    "@rspack/core": "2.1.10",
+    "@rspack/dev-server": "2.2.0",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7",
+    "css-loader": "7.1.4",
+    "prettier": "3.9.6",
+    "style-loader": "4.0.0",
+    "typescript": "6.0.3"
+  }
+}
