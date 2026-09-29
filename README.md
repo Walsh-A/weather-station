@@ -16,12 +16,12 @@ Inspired by dedicated flight-tracking displays, Home Station aims to bring the s
 
 ## Planned Features
 
-* **Local News** — Headlines and breaking stories from nearby news sources.
-* **Weather** — Current conditions, forecasts, and severe weather alerts.
-* **Traffic** — Nearby incidents, road closures, and traffic updates.
-* **Local Alerts** — Emergency notifications and other important area information.
-* **Community** — Local events, announcements, and happenings.
-* **Customizable Location** — Relevant information based on a configured city, region, or radius.
+- **Local News** — Headlines and breaking stories from nearby news sources.
+- **Weather** — Current conditions, forecasts, and severe weather alerts.
+- **Traffic** — Nearby incidents, road closures, and traffic updates.
+- **Local Alerts** — Emergency notifications and other important area information.
+- **Community** — Local events, announcements, and happenings.
+- **Customizable Location** — Relevant information based on a configured city, region, or radius.
 
 ## Project Goals
 
@@ -29,10 +29,10 @@ The goal is to create a clean, passive information display that provides useful 
 
 Home Station should be:
 
-* Simple and easy to read at a glance.
-* Capable of running continuously on dedicated hardware.
-* Focused on relevant, location-based information.
-* Modular enough to support additional information sources over time.
+- Simple and easy to read at a glance.
+- Capable of running continuously on dedicated hardware.
+- Focused on relevant, location-based information.
+- Modular enough to support additional information sources over time.
 
 ## Hardware
 
@@ -48,4 +48,4 @@ Home Station is currently in the initial design and planning phase. Features, te
 
 ---
 
-*Stay connected to what's happening around home.*
+_Stay connected to what's happening around home._
