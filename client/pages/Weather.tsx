@@ -5,6 +5,7 @@ import { Divider, Stack, Typography } from '@mui/material';
 import {
   CurrentWeather,
   HourlyWeather,
+  PrecipitationUnit,
   SpeedUnit,
   TemperatureUnit,
   WeatherResponse,
@@ -14,12 +15,14 @@ import WeatherTemperatures from '../components/weather/WeatherTemperatures';
 import WeatherUserControls from '../components/weather/WeatherUserControls';
 import WeatherItemRow from '../components/weather/WeatherItemRow';
 import WeatherWinds from '../components/weather/WeatherWinds';
+import WeatherPrecipitation from '../components/weather/WeatherPrecipitation';
 
 interface Props {}
 interface State {
   weather: WeatherResponse;
   tempUnit: TemperatureUnit;
   speedUnit: SpeedUnit;
+  precipitationUnit: PrecipitationUnit;
 }
 
 export default class Weather extends React.Component<Props, State> {
@@ -30,6 +33,7 @@ export default class Weather extends React.Component<Props, State> {
       weather: new WeatherResponse(),
       tempUnit: TemperatureUnit.F,
       speedUnit: SpeedUnit.MPH,
+      precipitationUnit: PrecipitationUnit.in,
     };
   }
 
@@ -57,7 +61,7 @@ export default class Weather extends React.Component<Props, State> {
   }
 
   override render() {
-    const { weather, tempUnit, speedUnit } = this.state;
+    const { weather, tempUnit, speedUnit, precipitationUnit } = this.state;
 
     const cw: CurrentWeather = weather?.current;
     const hw: HourlyWeather = weather?.hourly;
@@ -75,11 +79,15 @@ export default class Weather extends React.Component<Props, State> {
           <WeatherUserControls
             tempUnit={tempUnit}
             speedUnit={speedUnit}
+            precipitationUnit={precipitationUnit}
             handleTempUnitChange={(value: TemperatureUnit) =>
               this.setState({ tempUnit: value })
             }
             handleSpeedUnitChange={(value: SpeedUnit) =>
               this.setState({ speedUnit: value })
+            }
+            handlePrecipitationUnit={(value: PrecipitationUnit) =>
+              this.setState({ precipitationUnit: value })
             }
           />
         </Stack>
@@ -89,18 +97,15 @@ export default class Weather extends React.Component<Props, State> {
           temperatureUnit={this.state.tempUnit}
         />
         <WeatherWinds currentWeather={cw} speedUnit={this.state.speedUnit} />
+        <WeatherPrecipitation
+          currentWeather={cw}
+          hourlyWeather={hw}
+          precipitationUnit={this.state.precipitationUnit}
+        />
         <WeatherItemRow
           label="Weather Code:"
           value={`${cw.weather_code} - ${WeatherTools.getWeatherDescription(cw.weather_code)}`}
         />
-        <WeatherItemRow
-          label="Chance of Precipitation:"
-          value={precipitationProp}
-          unit="%"
-        />
-        <WeatherItemRow label="Rain:" value={cw.rain} unit="mm" />
-        <WeatherItemRow label="Showers:" value={cw.showers} unit="mm" />
-        <WeatherItemRow label="Snowfall:" value={cw.snowfall} unit="cm" />
         {this.renderLastUpdated(cw)}
       </Stack>
     );

@@ -19,5 +19,11 @@ export async function getCurrentWeather(latitude: number, longitude: number) {
     throw new Error('Failed to retrieve weather data.');
   }
 
-  return await response.json();
+  const weather = await response.json();
+
+  // Open-Meteo returns snowfall depth in cm.
+  // Convert it to mm of precipitation water equivalent.
+  weather.current.snowfall = weather.current.snowfall * (10 / 7);
+
+  return weather;
 }

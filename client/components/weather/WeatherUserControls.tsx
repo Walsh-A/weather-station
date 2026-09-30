@@ -1,13 +1,19 @@
 import React from 'react';
 
 import { Stack, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { SpeedUnit, TemperatureUnit } from '../../../shared/weather/weather';
+import {
+  PrecipitationUnit,
+  SpeedUnit,
+  TemperatureUnit,
+} from '../../../shared/weather/weather';
 
 interface Props {
   tempUnit: TemperatureUnit;
   speedUnit: SpeedUnit;
+  precipitationUnit: PrecipitationUnit;
   handleTempUnitChange: (unit: TemperatureUnit) => void;
   handleSpeedUnitChange: (unit: SpeedUnit) => void;
+  handlePrecipitationUnit: (unit: PrecipitationUnit) => void;
 }
 
 export default class WeatherUserControls extends React.Component<Props> {
@@ -18,6 +24,7 @@ export default class WeatherUserControls extends React.Component<Props> {
       <Stack>
         {this.renderTempUnitToggle()}
         {this.renderSpeedUnitToggle()}
+        {this.renderPrecipitationToggle()}
       </Stack>
     );
   }
@@ -70,6 +77,34 @@ export default class WeatherUserControls extends React.Component<Props> {
         onChange={(_event, value: SpeedUnit | null) => {
           if (value !== null) {
             handleSpeedUnitChange(value);
+          }
+        }}
+      >
+        {items}
+      </ToggleButtonGroup>
+    );
+  }
+
+  private renderPrecipitationToggle() {
+    const { precipitationUnit, handlePrecipitationUnit } = this.props;
+
+    const items = [];
+
+    for (let unit of Object.values(PrecipitationUnit)) {
+      items.push(
+        <ToggleButton key={unit} value={unit}>
+          {unit}
+        </ToggleButton>,
+      );
+    }
+
+    return (
+      <ToggleButtonGroup
+        exclusive
+        value={precipitationUnit}
+        onChange={(_event, value: PrecipitationUnit | null) => {
+          if (value !== null) {
+            handlePrecipitationUnit(value);
           }
         }}
       >

@@ -27,7 +27,7 @@ export class CurrentWeather {
 
   rain: number = 0; // mm
   showers: number = 0; //mm
-  snowfall: number = 0; //cm
+  snowfall: number = 0; //mm
 }
 
 export const WeatherCodes: Record<number, string> = {
@@ -69,4 +69,9 @@ export enum TemperatureUnit {
 export enum SpeedUnit {
   MPH = 'MPH',
   KPH = 'KPH',
+}
+
+export enum PrecipitationUnit {
+  mm = 'mm',
+  in = 'in',
 }
