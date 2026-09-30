@@ -1,8 +1,8 @@
 export class Conversions {
-  static celsiusToFahrenheit(c: number) {
-    if (isNaN(c)) return null;
+  static celsiusToFahrenheit(c: number): number | null {
+    if (Number.isNaN(c)) return null;
 
-    return c * (9 / 5) + 32;
+    return Number((c * (9 / 5) + 32).toFixed(2));
   }
 
   static kilometerPerHourToMilePerHour(kph: number) {
