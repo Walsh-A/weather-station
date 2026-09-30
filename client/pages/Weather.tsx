@@ -10,12 +10,11 @@ import {
   TemperatureUnit,
   WeatherResponse,
 } from '../../shared/weather/weather';
-import { WeatherTools } from '../../shared/weather/weatherTools';
 import WeatherTemperatures from '../components/weather/WeatherTemperatures';
 import WeatherUserControls from '../components/weather/WeatherUserControls';
-import WeatherItemRow from '../components/weather/WeatherItemRow';
 import WeatherWinds from '../components/weather/WeatherWinds';
 import WeatherPrecipitation from '../components/weather/WeatherPrecipitation';
+import WeatherCode from '../components/weather/WeatherCode';
 
 interface Props {}
 interface State {
@@ -66,11 +65,6 @@ export default class Weather extends React.Component<Props, State> {
     const cw: CurrentWeather = weather?.current;
     const hw: HourlyWeather = weather?.hourly;
 
-    const precipitationProp = WeatherTools.getCurrentPrecipitationProbability(
-      hw,
-      cw,
-    );
-
     return (
       <Stack>
         <Stack direction="row">
@@ -102,10 +96,7 @@ export default class Weather extends React.Component<Props, State> {
           hourlyWeather={hw}
           precipitationUnit={this.state.precipitationUnit}
         />
-        <WeatherItemRow
-          label="Weather Code:"
-          value={`${cw.weather_code} - ${WeatherTools.getWeatherDescription(cw.weather_code)}`}
-        />
+        <WeatherCode currentWeather={cw} />
         {this.renderLastUpdated(cw)}
       </Stack>
     );
