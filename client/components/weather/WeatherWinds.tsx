@@ -5,6 +5,7 @@ import { Stack } from '@mui/material';
 import WeatherItemRow from './WeatherItemRow';
 import { CurrentWeather, SpeedUnit } from '../../../shared/weather/weather';
 import { Conversions } from '../../../shared/utilityConversions';
+import { ArrowUpward } from '@mui/icons-material';
 
 interface Props {
   currentWeather: CurrentWeather;
@@ -31,6 +32,7 @@ export default class WeatherWinds extends React.Component<Props> {
           label="Wind Direction:"
           value={cw.wind_direction_10m}
           unit={`\u00B0`}
+          icon={this.renderDirectionArrow()}
         />
       </Stack>
     );
@@ -42,5 +44,11 @@ export default class WeatherWinds extends React.Component<Props> {
     if (speedUnit === SpeedUnit.KPH) return value;
 
     return Conversions.kilometerPerHourToMilePerHour(value) ?? value;
+  }
+
+  private renderDirectionArrow() {
+    const { currentWeather: cw } = this.props;
+
+    return <ArrowUpward style={{ rotate: `${cw.wind_direction_10m}deg` }} />;
   }
 }
