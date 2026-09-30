@@ -3,6 +3,12 @@ export class WeatherResponse {
   longitude: number = 0;
   timezone: string = 'utc';
   current: CurrentWeather = new CurrentWeather();
+  hourly: HourlyWeather = new HourlyWeather();
+}
+
+export class HourlyWeather {
+  time: string[] = [];
+  precipitation_probability: number[] = [];
 }
 
 export class CurrentWeather {
@@ -54,3 +60,8 @@ export const WeatherCodes: Record<number, string> = {
   96: 'Thunderstorm with Slight Hail',
   99: 'Thunderstorm with Heavy Hail',
 };
+
+export enum TemperatureUnit {
+  F = 'F',
+  C = 'C',
+}

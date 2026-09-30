@@ -1,5 +1,5 @@
 import React from 'react';
-import Weather from './components/Weather';
+import Weather from './pages/Weather';
 
 interface Props {}
 interface State {}
