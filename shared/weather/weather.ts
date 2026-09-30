@@ -6,13 +6,22 @@ export class WeatherResponse {
 }
 
 export class CurrentWeather {
-  time: Date = new Date();
-  interval: number = 0;
-  temperature_2m: number = 0; // degrees in F
-  relative_humidity_2m: number = 0;
-  apparent_temperature: number = 0; // degrees in F
+  time: string = '';
+  interval: number = 0; // seconds
+
+  temperature_2m: number = 0; // degrees in C
+  apparent_temperature: number = 0; // degrees in C
+  relative_humidity_2m: number = 0; //%
+
   weather_code: number = 0;
-  wind_speed_10m: number = 0; // mph
+
+  wind_speed_10m: number = 0; // kph
+  wind_gusts_10m: number = 0; //kph
+  wind_direction_10m = 0; // degrees 0-360
+
+  rain: number = 0; // mm
+  showers: number = 0; //mm
+  snowfall: number = 0; //cm
 }
 
 export const WeatherCodes: Record<number, string> = {

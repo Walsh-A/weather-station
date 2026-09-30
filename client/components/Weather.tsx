@@ -2,8 +2,8 @@ import React from 'react';
 
 import { Divider, Stack, Typography } from '@mui/material';
 
-import { CurrentWeather, WeatherResponse } from '../../shared/types/weather';
-import { WeatherTools } from '../../shared/types/weatherTools';
+import { CurrentWeather, WeatherResponse } from '../../shared/weather/weather';
+import { WeatherTools } from '../../shared/weather/weatherTools';
 
 interface Props {}
 interface State {
@@ -46,7 +46,8 @@ export default class Weather extends React.Component<Props, State> {
     const { weather } = this.state;
 
     const cw: CurrentWeather = weather?.current;
-    const degreeF = '\u00B0F';
+    // const degreeF = '\u00B0F';
+    const degreeC = '\u00B0C';
 
     return (
       <Stack>
@@ -55,19 +56,31 @@ export default class Weather extends React.Component<Props, State> {
         {this.renderInfoRow(
           'Current Temp:',
           `${cw.temperature_2m}`,
-          `${degreeF}`,
+          `${degreeC}`,
         )}
         {this.renderInfoRow(
           'Feels Like:',
           `${cw.apparent_temperature}`,
-          `${degreeF}`,
+          `${degreeC}`,
         )}
         {this.renderInfoRow('Humidity:', `${cw.relative_humidity_2m}`, '%')}
-        {this.renderInfoRow('Wind Speed:', `${cw.wind_speed_10m}`, 'mph')}
+        {this.renderInfoRow('Wind Speed:', `${cw.wind_speed_10m}`, 'kph')}
+        {this.renderInfoRow('Wind Gusts:', `${cw.wind_gusts_10m}`, 'kph')}
+        {this.renderInfoRow(
+          'Wind Direction:',
+          `${cw.wind_direction_10m}`,
+          '\u00B0',
+        )}
         {this.renderInfoRow(
           'Weather Code:',
           `${cw.weather_code} - ${WeatherTools.getWeatherDescription(cw.weather_code)}`,
         )}
+        {/*  */}
+        {this.renderInfoRow('Radin:', `${cw.rain}`, 'mm')}
+        {this.renderInfoRow('Showers:', `${cw.showers}`, 'mm')}
+        {this.renderInfoRow('Snowfall:', `${cw.snowfall}`, 'cm')}
+        {/*  */}
+        {this.renderLastUpdated(cw)}
       </Stack>
     );
   }
@@ -78,6 +91,22 @@ export default class Weather extends React.Component<Props, State> {
         <Typography>{label}</Typography>
         <Typography>{value}</Typography>
         {unit && <Typography>{unit}</Typography>}
+      </Stack>
+    );
+  }
+
+  private renderLastUpdated(cw: CurrentWeather) {
+    if (!cw?.time) return null;
+
+    const updatedDate = new Date(cw.time);
+
+    return (
+      <Stack direction="row" spacing={1}>
+        <Typography>updated</Typography>
+        <Stack direction="row" spacing={1}>
+          <Typography>{updatedDate.toLocaleDateString()}</Typography>
+          <Typography>{updatedDate.toLocaleTimeString()}</Typography>
+        </Stack>
       </Stack>
     );
   }
