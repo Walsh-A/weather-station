@@ -5,6 +5,7 @@ import { Divider, Stack, Typography } from '@mui/material';
 import {
   CurrentWeather,
   HourlyWeather,
+  SpeedUnit,
   TemperatureUnit,
   WeatherResponse,
 } from '../../shared/weather/weather';
@@ -12,11 +13,13 @@ import { WeatherTools } from '../../shared/weather/weatherTools';
 import WeatherTemperatures from '../components/weather/WeatherTemperatures';
 import WeatherUserControls from '../components/weather/WeatherUserControls';
 import WeatherItemRow from '../components/weather/WeatherItemRow';
+import WeatherWinds from '../components/weather/WeatherWinds';
 
 interface Props {}
 interface State {
   weather: WeatherResponse;
   tempUnit: TemperatureUnit;
+  speedUnit: SpeedUnit;
 }
 
 export default class Weather extends React.Component<Props, State> {
@@ -26,6 +29,7 @@ export default class Weather extends React.Component<Props, State> {
     this.state = {
       weather: new WeatherResponse(),
       tempUnit: TemperatureUnit.F,
+      speedUnit: SpeedUnit.MPH,
     };
   }
 
@@ -53,7 +57,7 @@ export default class Weather extends React.Component<Props, State> {
   }
 
   override render() {
-    const { weather, tempUnit } = this.state;
+    const { weather, tempUnit, speedUnit } = this.state;
 
     const cw: CurrentWeather = weather?.current;
     const hw: HourlyWeather = weather?.hourly;
@@ -70,8 +74,12 @@ export default class Weather extends React.Component<Props, State> {
           <Divider orientation="vertical" style={{ width: 4 }} />
           <WeatherUserControls
             tempUnit={tempUnit}
+            speedUnit={speedUnit}
             handleTempUnitChange={(value: TemperatureUnit) =>
               this.setState({ tempUnit: value })
+            }
+            handleSpeedUnitChange={(value: SpeedUnit) =>
+              this.setState({ speedUnit: value })
             }
           />
         </Stack>
@@ -80,21 +88,7 @@ export default class Weather extends React.Component<Props, State> {
           currentWeather={cw}
           temperatureUnit={this.state.tempUnit}
         />
-        <WeatherItemRow
-          label="Wind Speed:"
-          value={cw.wind_speed_10m}
-          unit="kph"
-        />
-        <WeatherItemRow
-          label="Wind Gusts:"
-          value={cw.wind_gusts_10m}
-          unit="kph"
-        />
-        <WeatherItemRow
-          label="Wind Direction:"
-          value={cw.wind_direction_10m}
-          unit={`\u00B0`}
-        />
+        <WeatherWinds currentWeather={cw} speedUnit={this.state.speedUnit} />
         <WeatherItemRow
           label="Weather Code:"
           value={`${cw.weather_code} - ${WeatherTools.getWeatherDescription(cw.weather_code)}`}

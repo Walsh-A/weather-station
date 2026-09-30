@@ -5,10 +5,10 @@ export class Conversions {
     return Number((c * (9 / 5) + 32).toFixed(2));
   }
 
-  static kilometerPerHourToMilePerHour(kph: number) {
+  static kilometerPerHourToMilePerHour(kph: number): number | null {
     if (isNaN(kph)) return null;
 
-    return kph * 0.621371;
+    return Number((kph * 0.621371).toFixed(2));
   }
 
   static millimeterToInch(mm: number) {

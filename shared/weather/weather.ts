@@ -65,3 +65,8 @@ export enum TemperatureUnit {
   F = 'F',
   C = 'C',
 }
+
+export enum SpeedUnit {
+  MPH = 'MPH',
+  KPH = 'KPH',
+}
