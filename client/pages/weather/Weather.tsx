@@ -9,12 +9,12 @@ import {
   SpeedUnit,
   TemperatureUnit,
   WeatherResponse,
-} from '../../shared/weather/weather';
-import WeatherTemperatures from '../components/weather/WeatherTemperatures';
-import WeatherUserControls from '../components/weather/WeatherUserControls';
-import WeatherWinds from '../components/weather/WeatherWinds';
-import WeatherPrecipitation from '../components/weather/WeatherPrecipitation';
-import WeatherCode from '../components/weather/WeatherCode';
+} from '../../../shared/weather/weather';
+import WeatherTemperatures from '../../components/weather/WeatherTemperatures';
+import WeatherUserControls from '../../components/weather/WeatherUserControls';
+import WeatherWinds from '../../components/weather/WeatherWinds';
+import WeatherPrecipitation from '../../components/weather/WeatherPrecipitation';
+import WeatherCode from '../../components/weather/WeatherCode';
 
 interface Props {}
 interface State {

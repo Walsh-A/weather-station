@@ -1,6 +1,7 @@
 import express from 'express';
 
 import { getCurrentWeather } from './services/weatherService';
+import { getActiveNwsAlerts } from './services/nwsAlertService';
 
 const app = express();
 const PORT = 3001;
@@ -26,6 +27,23 @@ app.get('/api/weather', async (req, res) => {
 
     res.status(500).json({
       error: 'Failed to retrieve weather data.',
+    });
+  }
+});
+
+app.get('/api/alerts', async (req, res) => {
+  try {
+    const latitude = 39.9612;
+    const longitude = -82.9988;
+
+    const alerts = await getActiveNwsAlerts(latitude, longitude);
+
+    res.json(alerts);
+  } catch (error) {
+    console.error('NWS alert error:', error);
+
+    res.status(500).json({
+      error: 'Failed to retrieve NWS alerts.',
     });
   }
 });
