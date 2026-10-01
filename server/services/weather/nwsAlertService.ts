@@ -1,4 +1,4 @@
-import { NwsAlertCollection } from '../../shared/weather/weatherAlert';
+import { NwsAlertCollection } from '../../../shared/weather/weatherAlert';
 
 export async function getActiveNwsAlerts(
   latitude: number,

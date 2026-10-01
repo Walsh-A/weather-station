@@ -1,7 +1,8 @@
 import express from 'express';
 
-import { getCurrentWeather } from './services/weatherService';
-import { getActiveNwsAlerts } from './services/nwsAlertService';
+import { getCurrentWeather } from './services/weather/weatherService';
+import { getActiveNwsAlerts } from './services/weather/nwsAlertService';
+import { getLocalNews } from './services/news/newsService';
 
 const app = express();
 const PORT = 3001;
@@ -13,6 +14,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Weather
 app.get('/api/weather', async (req, res) => {
   // hardcoded coordinates for Columbus, OH (39.9612° N, 82.9988° W)
   try {
@@ -44,6 +46,21 @@ app.get('/api/alerts', async (req, res) => {
 
     res.status(500).json({
       error: 'Failed to retrieve NWS alerts.',
+    });
+  }
+});
+
+// News
+app.get('/api/news', async (req, res) => {
+  try {
+    const news = await getLocalNews();
+
+    res.json(news);
+  } catch (error) {
+    console.error('News feed error:', error);
+
+    res.status(500).json({
+      error: 'Failed to retrieve local news.',
     });
   }
 });
