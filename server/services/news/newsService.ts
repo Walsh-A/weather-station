@@ -29,5 +29,5 @@ export async function getLocalNews(): Promise<NewsArticle[]> {
         (Number.isNaN(aPublishedAt) ? 0 : aPublishedAt)
       );
     })
-    .slice(0, 10);
+    .slice(0, 25); // Limit to 25 articles
 }

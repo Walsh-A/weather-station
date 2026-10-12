@@ -1,4 +1,9 @@
 export const WeeatherEvents = {
   WeatherUpdate: 'WeatherUpdate',
   WeatherSettings: 'WeatherSettings',
-} as const;
+};
+
+export const NewsEvents = {
+  NewsUpdate: 'NewsUpdate',
+  NewsSettings: 'NewsSettings',
+};

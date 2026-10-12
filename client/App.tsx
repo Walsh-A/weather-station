@@ -8,6 +8,7 @@ import WeatherAlert from './pages/weather/WeatherAlerts';
 import News from './pages/news/News';
 import Settings from './pages/Settings';
 import { WeatherStore } from './store/weatherStore';
+import { NewsStore } from './store/newsStore';
 
 interface Props {}
 interface State {
@@ -15,6 +16,7 @@ interface State {
 }
 
 const weatherStore = new WeatherStore();
+const newsStore = new NewsStore();
 
 export default class App extends React.Component<Props, State> {
   constructor(props: object) {
@@ -34,9 +36,10 @@ export default class App extends React.Component<Props, State> {
         <WeatherAlert />
         <Weather store={weatherStore} />
         <Divider />
-        <News />
+        <News store={newsStore} />
         <Settings
           weatherStore={weatherStore}
+          newsStore={newsStore}
           isOpen={openSettings}
           onClose={() => this.setState({ openSettings: false })}
         />

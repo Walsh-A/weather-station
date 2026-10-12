@@ -2,49 +2,41 @@ import React from 'react';
 
 import { Divider, Stack, Typography } from '@mui/material';
 
-import { NewsArticle } from '../../../shared/news/news';
+import { NewsStore } from '../../store/newsStore';
 
-interface Props {}
-interface State {
-  articles: NewsArticle[];
+interface Props {
+  store: NewsStore;
 }
+interface State {}
 
 export default class News extends React.Component<Props, State> {
-  constructor(props: object) {
+  constructor(props: Props) {
     super(props);
 
-    this.state = {
-      articles: [],
-    };
+    this.state = {};
   }
 
   override componentDidMount() {
-    this.loadNews();
+    const { store } = this.props;
+    store.loadNews();
+
+    store.addEventListener('NewsUpdate', this.update);
   }
 
-  async loadNews() {
-    try {
-      const response = await fetch('/api/news');
-
-      if (!response.ok) {
-        throw new Error('Failed to retrieve local news.');
-      }
-
-      const data: NewsArticle[] = await response.json();
-
-      this.setState({
-        articles: data,
-      });
-    } catch (err) {
-      console.log(
-        'ERROR',
-        err instanceof Error ? err.message : 'An unknown error occurred.',
-      );
-    }
+  override componentWillUnmount() {
+    const { store } = this.props;
+    store.removeEventListener('NewsUpdate', this.update);
   }
+
+  private update = () => {
+    this.forceUpdate();
+  };
 
   override render() {
-    const { articles } = this.state;
+    const { store } = this.props;
+    const { articles, numberOfArticles } = store;
+
+    const limitedArticles = articles.slice(0, numberOfArticles);
 
     // todo ideas:
     // make title clickable to go to the article
@@ -52,9 +44,12 @@ export default class News extends React.Component<Props, State> {
 
     return (
       <Stack spacing={1}>
-        <Typography variant="h6">Local News</Typography>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'baseline' }}>
+          <Typography variant="h6">Local News</Typography>
+          <Typography>displaying {numberOfArticles} article/s</Typography>
+        </Stack>
         <Divider />
-        {articles.map((article) => (
+        {limitedArticles.map((article) => (
           <Stack key={article.url}>
             <Typography variant="h6">{article.title}</Typography>
             <Typography>{article.summary}</Typography>

@@ -8,12 +8,16 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { Close } from '@mui/icons-material';
+
 import WeatherUserControls from '../components/weather/WeatherUserControls';
 import { WeatherStore } from '../store/weatherStore';
-import { Close } from '@mui/icons-material';
+import { NewsStore } from '../store/newsStore';
+import NewsSettings from '../components/news/NewsSettings';
 
 interface Props {
   weatherStore: WeatherStore;
+  newsStore: NewsStore;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -41,8 +45,10 @@ export default class Settings extends React.Component<Props, State> {
             direction="row"
             sx={{ justifyContent: 'space-between', alignItems: 'start' }}
           >
-            {this.renderWeatherControls()}
-
+            <Stack spacing={2}>
+              {this.renderWeatherSettings()}
+              {this.renderNewsSettings()}
+            </Stack>
             <IconButton onClick={() => onClose()}>
               <Close />
             </IconButton>
@@ -52,16 +58,30 @@ export default class Settings extends React.Component<Props, State> {
     );
   }
 
-  private renderWeatherControls() {
+  private renderWeatherSettings() {
     const { weatherStore } = this.props;
 
     return (
-      <Stack>
+      <Stack spacing={1}>
         <Typography variant="h2" sx={{ textAlign: 'center' }}>
           Weather Settings
         </Typography>
         <Divider />
         <WeatherUserControls store={weatherStore} />
+      </Stack>
+    );
+  }
+
+  private renderNewsSettings() {
+    const { newsStore } = this.props;
+
+    return (
+      <Stack spacing={1}>
+        <Typography variant="h2" sx={{ textAlign: 'center' }}>
+          News Settings
+        </Typography>
+        <Divider />
+        <NewsSettings store={newsStore} />
       </Stack>
     );
   }
