@@ -46,6 +46,10 @@ export default class News extends React.Component<Props, State> {
   override render() {
     const { articles } = this.state;
 
+    // todo ideas:
+    // make title clickable to go to the article
+    // show the image with the article?
+
     return (
       <Stack spacing={1}>
         <Typography variant="h6">Local News</Typography>

@@ -2,65 +2,47 @@ import React from 'react';
 
 import { Divider, Stack, Typography } from '@mui/material';
 
-import {
-  CurrentWeather,
-  HourlyWeather,
-  PrecipitationUnit,
-  SpeedUnit,
-  TemperatureUnit,
-  WeatherResponse,
-} from '../../../shared/weather/weather';
+import { CurrentWeather, HourlyWeather } from '../../../shared/weather/weather';
 import WeatherTemperatures from '../../components/weather/WeatherTemperatures';
-import WeatherUserControls from '../../components/weather/WeatherUserControls';
 import WeatherWinds from '../../components/weather/WeatherWinds';
 import WeatherPrecipitation from '../../components/weather/WeatherPrecipitation';
 import WeatherCode from '../../components/weather/WeatherCode';
+import { WeatherStore } from '../../store/weatherStore';
+import { WeeatherEvents } from '../../store/Events';
 
-interface Props {}
-interface State {
-  weather: WeatherResponse;
-  tempUnit: TemperatureUnit;
-  speedUnit: SpeedUnit;
-  precipitationUnit: PrecipitationUnit;
+interface Props {
+  store: WeatherStore;
 }
+interface State {}
 
 export default class Weather extends React.Component<Props, State> {
-  constructor(props: object) {
+  constructor(props: Props) {
     super(props);
 
-    this.state = {
-      weather: new WeatherResponse(),
-      tempUnit: TemperatureUnit.F,
-      speedUnit: SpeedUnit.MPH,
-      precipitationUnit: PrecipitationUnit.in,
-    };
+    this.state = {};
   }
 
   override componentDidMount() {
-    this.loadWeather();
+    const { store } = this.props;
+    store.loadWeather();
+
+    store.addEventListener(WeeatherEvents.WeatherUpdate, this.update);
+    store.addEventListener(WeeatherEvents.WeatherSettings, this.update);
   }
 
-  async loadWeather() {
-    try {
-      const response = await fetch('/api/weather');
-
-      if (!response.ok) {
-        throw new Error('Failed to retrieve weather data.');
-      }
-
-      const data: WeatherResponse = await response.json();
-
-      this.setState({ weather: data });
-    } catch (err) {
-      console.log(
-        'ERROR',
-        err instanceof Error ? err.message : 'An unknown error occurred.',
-      );
-    }
+  override componentWillUnmount() {
+    const { store } = this.props;
+    store.removeEventListener(WeeatherEvents.WeatherUpdate, this.update);
+    store.removeEventListener(WeeatherEvents.WeatherSettings, this.update);
   }
+
+  private update = () => {
+    this.forceUpdate();
+  };
 
   override render() {
-    const { weather, tempUnit, speedUnit, precipitationUnit } = this.state;
+    const { store } = this.props;
+    const { weather, tempUnit, speedUnit, precipitationUnit } = store;
 
     const cw: CurrentWeather = weather?.current;
     const hw: HourlyWeather = weather?.hourly;
@@ -70,31 +52,14 @@ export default class Weather extends React.Component<Props, State> {
         <Stack direction="row">
           <Typography>Current Weather</Typography>
           <Divider orientation="vertical" style={{ width: 4 }} />
-          <WeatherUserControls
-            tempUnit={tempUnit}
-            speedUnit={speedUnit}
-            precipitationUnit={precipitationUnit}
-            handleTempUnitChange={(value: TemperatureUnit) =>
-              this.setState({ tempUnit: value })
-            }
-            handleSpeedUnitChange={(value: SpeedUnit) =>
-              this.setState({ speedUnit: value })
-            }
-            handlePrecipitationUnit={(value: PrecipitationUnit) =>
-              this.setState({ precipitationUnit: value })
-            }
-          />
         </Stack>
         <Divider />
-        <WeatherTemperatures
-          currentWeather={cw}
-          temperatureUnit={this.state.tempUnit}
-        />
-        <WeatherWinds currentWeather={cw} speedUnit={this.state.speedUnit} />
+        <WeatherTemperatures currentWeather={cw} temperatureUnit={tempUnit} />
+        <WeatherWinds currentWeather={cw} speedUnit={speedUnit} />
         <WeatherPrecipitation
           currentWeather={cw}
           hourlyWeather={hw}
-          precipitationUnit={this.state.precipitationUnit}
+          precipitationUnit={precipitationUnit}
         />
         <WeatherCode currentWeather={cw} />
         {this.renderLastUpdated(cw)}
