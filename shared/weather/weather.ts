@@ -4,11 +4,7 @@ export class WeatherResponse {
   timezone: string = 'utc';
   current: CurrentWeather = new CurrentWeather();
   hourly: HourlyWeather = new HourlyWeather();
-}
-
-export class HourlyWeather {
-  time: string[] = [];
-  precipitation_probability: number[] = [];
+  daily: DailyWeather = new DailyWeather();
 }
 
 export class CurrentWeather {
@@ -28,6 +24,16 @@ export class CurrentWeather {
   rain: number = 0; // mm
   showers: number = 0; //mm
   snowfall: number = 0; //mm
+}
+export class HourlyWeather {
+  time: string[] = [];
+  precipitation_probability: number[] = [];
+}
+
+export class DailyWeather {
+  time: string[] = [];
+  sunrise: string[] = [];
+  sunset: string[] = [];
 }
 
 export const WeatherCodes: Record<number, string> = {
