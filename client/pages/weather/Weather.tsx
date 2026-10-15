@@ -77,7 +77,7 @@ export default class Weather extends React.Component<Props, State> {
   private renderLastUpdated(cw: CurrentWeather) {
     if (!cw?.time) return null;
 
-    const updatedDate = new Date(cw.time);
+    const updatedDate = new Date(`${cw.time}z`);
 
     return (
       <Stack direction="row" spacing={1}>
