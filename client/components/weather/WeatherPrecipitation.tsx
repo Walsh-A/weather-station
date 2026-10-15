@@ -41,28 +41,29 @@ export default class WeatherPrecipitation extends React.Component<Props> {
         />
         <WeatherItemRow
           label="Rain:"
-          value={this.convertPrecipitationUnits(cw.rain)}
+          value={Conversions.convertPrecipitationUnits(
+            cw.rain,
+            precipitationUnit,
+          )}
           unit={precipitationUnit}
         />
         <WeatherItemRow
           label="Showers:"
-          value={this.convertPrecipitationUnits(cw.showers)}
+          value={Conversions.convertPrecipitationUnits(
+            cw.showers,
+            precipitationUnit,
+          )}
           unit={precipitationUnit}
         />
         <WeatherItemRow
           label="Snowfall:"
-          value={this.convertPrecipitationUnits(cw.snowfall)}
+          value={Conversions.convertPrecipitationUnits(
+            cw.snowfall,
+            precipitationUnit,
+          )}
           unit={precipitationUnit}
         />
       </Stack>
     );
-  }
-
-  private convertPrecipitationUnits(value: number): number {
-    const { precipitationUnit } = this.props;
-
-    if (precipitationUnit === PrecipitationUnit.mm) return value;
-
-    return Conversions.millimeterToInch(value) ?? value;
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Slider, SliderThumb, Stack, Typography } from '@mui/material';
+import { Slider, Stack, Typography } from '@mui/material';
 
 import { DailyWeather } from '../../../shared/weather/weather';
 import WeatherItemRow from './WeatherItemRow';

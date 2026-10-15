@@ -26,12 +26,18 @@ export default class WeatherTemperatures extends React.Component<Props> {
       <Stack>
         <WeatherItemRow
           label="Current Temp:"
-          value={this.convertTempUnits(currentWeather.temperature_2m)}
+          value={Conversions.convertTempUnit(
+            currentWeather.temperature_2m,
+            temperatureUnit,
+          )}
           unit={degreeUnit}
         />
         <WeatherItemRow
           label="Feels Like"
-          value={this.convertTempUnits(currentWeather.apparent_temperature)}
+          value={Conversions.convertTempUnit(
+            currentWeather.apparent_temperature,
+            temperatureUnit,
+          )}
           unit={degreeUnit}
         />
         <WeatherItemRow
@@ -41,13 +47,5 @@ export default class WeatherTemperatures extends React.Component<Props> {
         />
       </Stack>
     );
-  }
-
-  private convertTempUnits(value: number): number {
-    const { temperatureUnit } = this.props;
-
-    if (temperatureUnit === TemperatureUnit.C) return value;
-
-    return Conversions.celsiusToFahrenheit(value) ?? value;
   }
 }

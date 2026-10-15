@@ -11,9 +11,10 @@ import WeatherTemperatures from '../../components/weather/WeatherTemperatures';
 import WeatherWinds from '../../components/weather/WeatherWinds';
 import WeatherPrecipitation from '../../components/weather/WeatherPrecipitation';
 import WeatherCode from '../../components/weather/WeatherCode';
-import { WeatherStore } from '../../store/weatherStore';
+import { weatherStore, WeatherStore } from '../../store/weatherStore';
 import { WeeatherEvents } from '../../store/Events';
 import WeatherSunriseSunset from '../../components/weather/WeatherSunriseSunset';
+import WeatherSevenDayForecast from '../../components/weather/WeatherSevenDayForecast';
 
 interface Props {
   store: WeatherStore;
@@ -55,10 +56,7 @@ export default class Weather extends React.Component<Props, State> {
 
     return (
       <Stack>
-        <Stack direction="row">
-          <Typography>Current Weather</Typography>
-          <Divider orientation="vertical" style={{ width: 4 }} />
-        </Stack>
+        <Typography>Current Weather</Typography>
         <Divider />
         <WeatherTemperatures currentWeather={cw} temperatureUnit={tempUnit} />
         <WeatherWinds currentWeather={cw} speedUnit={speedUnit} />
@@ -67,8 +65,10 @@ export default class Weather extends React.Component<Props, State> {
           hourlyWeather={hw}
           precipitationUnit={precipitationUnit}
         />
-        <WeatherCode currentWeather={cw} />
+        {/* <WeatherCode currentWeather={cw} /> */}
+        <WeatherCode weatherCode={cw.weather_code} />
         <WeatherSunriseSunset dailyWeather={dw} />
+        <WeatherSevenDayForecast store={weatherStore} dailyWeather={dw} />
         {this.renderLastUpdated(cw)}
       </Stack>
     );

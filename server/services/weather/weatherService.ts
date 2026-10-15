@@ -9,7 +9,10 @@ export async function getCurrentWeather(latitude: number, longitude: number) {
   );
 
   url.searchParams.set('hourly', 'precipitation_probability');
-  url.searchParams.set('daily', 'sunrise,sunset');
+  url.searchParams.set(
+    'daily',
+    'weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,sunrise,sunset',
+  );
 
   url.searchParams.set('temperature_unit', 'celsius');
   url.searchParams.set('wind_speed_unit', 'kmh');

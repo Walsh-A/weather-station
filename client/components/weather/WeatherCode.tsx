@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CurrentWeather } from '../../../shared/weather/weather';
+// import { CurrentWeather } from '../../../shared/weather/weather';
 import { WeatherTools } from '../../../shared/weather/weatherTools';
 import WeatherItemRow from './WeatherItemRow';
 import {
@@ -19,26 +19,31 @@ import {
 } from '@mui/icons-material';
 
 interface Props {
-  currentWeather: CurrentWeather;
+  // currentWeather: CurrentWeather;
+  weatherCode: number;
 }
 
 export default class WeatherCode extends React.Component<Props> {
   override render() {
-    const { currentWeather: cw } = this.props;
+    // const { currentWeather: cw } = this.props;
+    const { weatherCode } = this.props;
 
     return (
       <WeatherItemRow
         label="Weather Code:"
-        value={`${cw.weather_code} - ${WeatherTools.getWeatherDescription(cw.weather_code)}`}
+        // value={`${cw.weather_code} - ${WeatherTools.getWeatherDescription(cw.weather_code)}`}
+        value={`${weatherCode} - ${WeatherTools.getWeatherDescription(weatherCode)}`}
         icon={this.renderCodeIcon()}
       />
     );
   }
 
   private renderCodeIcon() {
-    const { currentWeather: cw } = this.props;
+    // const { currentWeather: cw } = this.props;
+    const { weatherCode } = this.props;
 
-    switch (cw.weather_code) {
+    // switch (cw.weather_code) {
+    switch (weatherCode) {
       case 0:
         return <Sunny />;
       case 1:
