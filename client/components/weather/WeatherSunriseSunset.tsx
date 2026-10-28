@@ -1,14 +1,15 @@
 import React from 'react';
 
 import { Slider, Stack, Typography } from '@mui/material';
-
-import { DailyWeather } from '../../../shared/weather/weather';
-import WeatherItemRow from './WeatherItemRow';
 import { Brightness3, Sunny } from '@mui/icons-material';
 import { CSSProperties } from '@mui/material/styles';
 
+import { DailyWeather } from '../../../shared/weather/weather';
+import WeatherItemRow from './WeatherItemRow';
+
 interface Props {
   dailyWeather: DailyWeather;
+  sliderWidth?: number;
 }
 interface State {}
 
@@ -23,25 +24,28 @@ export default class WeatherSunriseSunset extends React.Component<
   }
 
   override render() {
-    const { dailyWeather } = this.props;
+    const { dailyWeather, sliderWidth } = this.props;
 
-    return (
-      <Stack>
-        <WeatherItemRow
-          label="Sunrise:"
-          value={this.getDateTime(dailyWeather?.sunrise)}
-        />
-        <WeatherItemRow
-          label="Sunset:"
-          value={this.getDateTime(dailyWeather?.sunset)}
-        />
-        {this.renderSunPositionSlider()}
-      </Stack>
-    );
+    if (!sliderWidth) {
+      return (
+        <Stack>
+          <WeatherItemRow
+            label="Sunrise:"
+            value={this.getDateTime(dailyWeather?.sunrise)}
+          />
+          <WeatherItemRow
+            label="Sunset:"
+            value={this.getDateTime(dailyWeather?.sunset)}
+          />
+        </Stack>
+      );
+    }
+
+    return <Stack>{this.renderSunPositionSlider()}</Stack>;
   }
 
   private renderSunPositionSlider() {
-    const { dailyWeather } = this.props;
+    const { dailyWeather, sliderWidth } = this.props;
 
     const sunrise = this.getTodayDateTime(dailyWeather?.sunrise ?? []);
     const sunset = this.getTodayDateTime(dailyWeather?.sunset ?? []);
@@ -53,49 +57,47 @@ export default class WeatherSunriseSunset extends React.Component<
     const max = sunset.getTime();
     const sliderValue = Math.min(Math.max(now, min), max);
 
-    const timeLabelStyle: CSSProperties = { width: 115 };
-
     return (
-      <Stack
-        direction="row"
-        spacing={1}
-        sx={{ alignItems: 'center', width: 500 }}
-      >
-        <Typography style={timeLabelStyle}>
-          {sunrise.toLocaleTimeString([], {
-            hour: 'numeric',
-            minute: '2-digit',
-          })}
-        </Typography>
-        <Sunny />
-        <Slider
-          disabled
-          value={sliderValue}
-          min={min}
-          max={max}
-          sx={{
-            color: 'common.black',
-            pointerEvents: 'none',
-            '&.Mui-disabled': {
+      <Stack sx={{ width: sliderWidth }}>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+          <Sunny />
+          <Slider
+            disabled
+            value={sliderValue}
+            min={min}
+            max={max}
+            sx={{
               color: 'common.black',
-              opacity: 1,
-            },
-            '& .MuiSlider-rail': {
-              opacity: 1,
-            },
-            '& .MuiSlider-thumb svg': {
-              color: 'common.black',
-              fontSize: 24,
-            },
-          }}
-        />
-        <Brightness3 sx={{ transform: 'rotate(180deg)' }} />
-        <Typography style={timeLabelStyle}>
-          {sunset.toLocaleTimeString([], {
-            hour: 'numeric',
-            minute: '2-digit',
-          })}
-        </Typography>
+              pointerEvents: 'none',
+              '&.Mui-disabled': {
+                color: 'common.black',
+                opacity: 1,
+              },
+              '& .MuiSlider-rail': {
+                opacity: 0.5,
+              },
+              '& .MuiSlider-thumb svg': {
+                color: 'common.black',
+                fontSize: 24,
+              },
+            }}
+          />
+          <Brightness3 sx={{ transform: 'rotate(180deg)' }} />
+        </Stack>
+        <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+          <Typography variant="caption">
+            {sunrise.toLocaleTimeString([], {
+              hour: 'numeric',
+              minute: '2-digit',
+            })}
+          </Typography>
+          <Typography variant="caption">
+            {sunset.toLocaleTimeString([], {
+              hour: 'numeric',
+              minute: '2-digit',
+            })}
+          </Typography>
+        </Stack>
       </Stack>
     );
   }

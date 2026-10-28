@@ -30,7 +30,6 @@ export default class WeatherSevenDayForecast extends React.Component<
       <Stack>
         <Typography>Seven Day Forecast</Typography>
         <Divider />
-
         {this.renderForecast()}
       </Stack>
     );
@@ -74,9 +73,12 @@ export default class WeatherSevenDayForecast extends React.Component<
       }
 
       items.push(
-        <Stack key={dateString}>
+        <Stack
+          key={dateString}
+          sx={{ width: '100%', justifyContent: 'space-evenly' }}
+        >
           <Typography>{this.formatForecastDate(dateString)}</Typography>
-          <WeatherCode weatherCode={weatherCode} />
+          <WeatherCode weatherCode={weatherCode} dataRow={true} />
           <WeatherItemRow
             label="High:"
             value={Conversions.convertTempUnit(highTemperature, tempUnit)}

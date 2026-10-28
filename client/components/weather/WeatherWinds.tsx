@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import WeatherItemRow from './WeatherItemRow';
 import { CurrentWeather, SpeedUnit } from '../../../shared/weather/weather';
 import { Conversions } from '../../../shared/utilityConversions';
-import { ArrowUpward } from '@mui/icons-material';
+import WindVane from './WindVane';
 
 interface Props {
   currentWeather: CurrentWeather;
@@ -20,36 +20,22 @@ export default class WeatherWinds extends React.Component<Props> {
       <Stack>
         <WeatherItemRow
           label="Wind Speed:"
-          value={this.convertSpeedUnits(cw.wind_speed_10m)}
+          value={Conversions.convertSpeedUnits(cw.wind_speed_10m, speedUnit)}
           unit={speedUnit}
         />
         <WeatherItemRow
           label="Wind Gusts:"
-          value={this.convertSpeedUnits(cw.wind_gusts_10m)}
+          value={Conversions.convertSpeedUnits(cw.wind_gusts_10m, speedUnit)}
           unit={speedUnit}
         />
-        <Stack direction="row">
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <WeatherItemRow
             label="Wind Direction:"
             value={cw.wind_direction_10m + `\u00B0`}
           />
-          {this.renderDirectionArrow()}
+          <WindVane currentWeather={cw} compassSize={60} />
         </Stack>
       </Stack>
     );
-  }
-
-  private convertSpeedUnits(value: number): number {
-    const { speedUnit } = this.props;
-
-    if (speedUnit === SpeedUnit.KPH) return value;
-
-    return Conversions.kilometerPerHourToMilePerHour(value) ?? value;
-  }
-
-  private renderDirectionArrow() {
-    const { currentWeather: cw } = this.props;
-
-    return <ArrowUpward style={{ rotate: `${cw.wind_direction_10m}deg` }} />;
   }
 }

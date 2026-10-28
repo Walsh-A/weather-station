@@ -25,7 +25,7 @@ export default class WeatherPrecipitation extends React.Component<Props> {
       precipitationUnit,
     } = this.props;
 
-    const precipitationProp = WeatherTools.getCurrentPrecipitationProbability(
+    const precipitationProb = WeatherTools.getCurrentPrecipitationProbability(
       hw,
       cw,
     );
@@ -36,7 +36,7 @@ export default class WeatherPrecipitation extends React.Component<Props> {
       <Stack>
         <WeatherItemRow
           label="Chance of Precipitation:"
-          value={precipitationProp}
+          value={precipitationProb}
           unit="%"
         />
         <WeatherItemRow

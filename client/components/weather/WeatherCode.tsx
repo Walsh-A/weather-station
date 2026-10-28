@@ -1,6 +1,5 @@
 import React from 'react';
 
-// import { CurrentWeather } from '../../../shared/weather/weather';
 import { WeatherTools } from '../../../shared/weather/weatherTools';
 import WeatherItemRow from './WeatherItemRow';
 import {
@@ -17,86 +16,103 @@ import {
   WbCloudy,
   WbSunny,
 } from '@mui/icons-material';
+import type { SvgIconComponent } from '@mui/icons-material';
+import { Stack, Typography } from '@mui/material';
 
 interface Props {
-  // currentWeather: CurrentWeather;
   weatherCode: number;
+  dataRow?: boolean;
 }
 
 export default class WeatherCode extends React.Component<Props> {
   override render() {
-    // const { currentWeather: cw } = this.props;
+    const { weatherCode, dataRow } = this.props;
+    const CodeIcon = this.getCodeIcon();
+
+    if (dataRow) {
+      return this.renderCodeRowData();
+    }
+
+    return (
+      <Stack sx={{ alignItems: 'center' }}>
+        {CodeIcon && <CodeIcon style={{ height: 50, width: 50 }} />}
+        <Typography>
+          {WeatherTools.getWeatherDescription(weatherCode)}
+        </Typography>
+      </Stack>
+    );
+  }
+
+  private renderCodeRowData() {
     const { weatherCode } = this.props;
+    const CodeIcon = this.getCodeIcon();
 
     return (
       <WeatherItemRow
         label="Weather Code:"
-        // value={`${cw.weather_code} - ${WeatherTools.getWeatherDescription(cw.weather_code)}`}
         value={`${weatherCode} - ${WeatherTools.getWeatherDescription(weatherCode)}`}
-        icon={this.renderCodeIcon()}
+        icon={CodeIcon && <CodeIcon />}
       />
     );
   }
 
-  private renderCodeIcon() {
-    // const { currentWeather: cw } = this.props;
+  private getCodeIcon(): SvgIconComponent | null {
     const { weatherCode } = this.props;
 
-    // switch (cw.weather_code) {
     switch (weatherCode) {
       case 0:
-        return <Sunny />;
+        return Sunny;
       case 1:
-        return <WbSunny />;
+        return WbSunny;
       case 2:
-        return <WbCloudy />;
+        return WbCloudy;
       case 3:
-        return <Cloud />;
+        return Cloud;
 
       case 45:
       case 48:
-        return <Foggy />;
+        return Foggy;
 
       case 51:
       case 53:
-        return <Grain />;
+        return Grain;
       case 55:
-        return <WaterDrop />;
+        return WaterDrop;
       case 56:
       case 57:
-        return <SevereCold />;
+        return SevereCold;
 
       case 61:
       case 63:
-        return <WaterDrop />;
+        return WaterDrop;
       case 65:
-        return <Storm />;
+        return Storm;
       case 66:
       case 67:
-        return <SevereCold />;
+        return SevereCold;
 
       case 71:
-        return <AcUnit />;
+        return AcUnit;
       case 73:
       case 75:
-        return <CloudySnowing />;
+        return CloudySnowing;
       case 77:
-        return <AcUnit />;
+        return AcUnit;
 
       case 80:
       case 81:
-        return <WaterDrop />;
+        return WaterDrop;
       case 82:
-        return <Storm />;
+        return Storm;
 
       case 85:
       case 86:
-        return <CloudySnowing />;
+        return CloudySnowing;
 
       case 95:
       case 96:
       case 99:
-        return <Thunderstorm />;
+        return Thunderstorm;
       default:
         return null;
     }

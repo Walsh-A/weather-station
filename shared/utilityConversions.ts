@@ -1,24 +1,46 @@
-import { PrecipitationUnit, TemperatureUnit } from './weather/weather';
+import {
+  PrecipitationUnit,
+  SpeedUnit,
+  TemperatureUnit,
+} from './weather/weather';
 
 export class Conversions {
   // #region Temperature
-  static celsiusToFahrenheit(c: number): number | null {
+  static celsiusToFahrenheit(c: number, round: number = 2): number | null {
     if (Number.isNaN(c)) return null;
 
-    return Number((c * (9 / 5) + 32).toFixed(2));
+    return Number((c * (9 / 5) + 32).toFixed(round));
   }
 
-  static convertTempUnit(temp_c: number, unit: TemperatureUnit) {
+  static convertTempUnit(
+    temp_c: number,
+    unit: TemperatureUnit,
+    round?: number,
+  ) {
     if (unit === TemperatureUnit.C) return temp_c;
 
-    return Conversions.celsiusToFahrenheit(temp_c) ?? temp_c;
+    return (
+      Conversions.celsiusToFahrenheit(temp_c, round) ?? temp_c.toFixed(round)
+    );
   }
 
   // #region Speed
-  static kilometerPerHourToMilePerHour(kph: number): number | null {
+  static kilometerPerHourToMilePerHour(
+    kph: number,
+    round: number = 2,
+  ): number | null {
     if (isNaN(kph)) return null;
 
-    return Number((kph * 0.621371).toFixed(2));
+    return Number((kph * 0.621371).toFixed(round));
+  }
+
+  static convertSpeedUnits(speed_kph: number, unit: SpeedUnit, round?: number) {
+    if (unit === SpeedUnit.KPH) return speed_kph;
+
+    return (
+      Conversions.kilometerPerHourToMilePerHour(speed_kph, round) ??
+      speed_kph.toFixed(round)
+    );
   }
 
   // #region Distance
