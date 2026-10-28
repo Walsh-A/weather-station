@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import WeatherItemRow from './WeatherItemRow';
 import { CurrentWeather, SpeedUnit } from '../../../shared/weather/weather';
@@ -28,12 +28,13 @@ export default class WeatherWinds extends React.Component<Props> {
           value={this.convertSpeedUnits(cw.wind_gusts_10m)}
           unit={speedUnit}
         />
-        <WeatherItemRow
-          label="Wind Direction:"
-          value={cw.wind_direction_10m}
-          unit={`\u00B0`}
-          icon={this.renderDirectionArrow()}
-        />
+        <Stack direction="row">
+          <WeatherItemRow
+            label="Wind Direction:"
+            value={cw.wind_direction_10m + `\u00B0`}
+          />
+          {this.renderDirectionArrow()}
+        </Stack>
       </Stack>
     );
   }
