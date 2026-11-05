@@ -1,62 +1,50 @@
 import React from 'react';
 
-import { Divider, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
-import {
-  CurrentWeather,
-  DailyWeather,
-  TemperatureUnit,
-} from '../../../shared/weather';
+import { CurrentWeather, DailyWeather } from '../../../shared/weather';
 import { Conversions } from '../../../shared/utilityConversions';
+import { WeatherStore } from '../../store/weatherStore';
 
 interface Props {
+  store: WeatherStore;
   currentWeather: CurrentWeather;
   dailyWeather: DailyWeather;
-  temperatureUnit: TemperatureUnit;
 }
+
+//TODO: this should be a reusable component used in the 7 day forecast as well as the current weather
 
 export default class WeatherTemperatures extends React.Component<Props> {
   override render() {
-    const {
-      currentWeather: cw,
-      dailyWeather: dw,
-      temperatureUnit: tempUnit,
-    } = this.props;
+    const { store, currentWeather: cw, dailyWeather: dw } = this.props;
+    const { tempUnit, degreeSymbol } = store;
 
-    return (
-      <Stack direction="row" spacing={1}>
-        {this.renderDisplayRow(
-          'Feels Like',
-          Conversions.convertTempUnit(cw.apparent_temperature, tempUnit, 0),
-        )}
-        <Divider orientation="vertical" style={{ height: 16, width: 4 }} />
-        {this.renderDisplayRow(
-          'H',
-          Conversions.convertTempUnit(
-            Number(dw.temperature_2m_max[0]),
-            tempUnit,
-            0,
-          ),
-        )}
-        <Divider orientation="vertical" style={{ height: 16, width: 4 }} />
-        {this.renderDisplayRow(
-          'L',
-          Conversions.convertTempUnit(
-            Number(dw.temperature_2m_min[0]),
-            tempUnit,
-            0,
-          ),
-        )}
-      </Stack>
+    const high = Conversions.convertTempUnit(
+      Number(dw.temperature_2m_max[0]),
+      tempUnit,
+      0,
     );
-  }
+    const low = Conversions.convertTempUnit(
+      Number(dw.temperature_2m_min[0]),
+      tempUnit,
+      0,
+    );
+    const feelsLike = Conversions.convertTempUnit(
+      cw.apparent_temperature,
+      tempUnit,
+      0,
+    );
 
-  private renderDisplayRow(label: string, value: string | number) {
-    // todo make this a reusable component that can be used in other places
     return (
-      <Stack direction="row" spacing={1}>
-        <Typography style={{ opacity: 0.5 }}>{label}</Typography>
-        <Typography>{value}</Typography>
+      <Stack>
+        <Stack direction="row" spacing={1}>
+          <Typography style={{ opacity: 0.5 }}>Feels Like</Typography>
+          <Typography>
+            {feelsLike}
+            {degreeSymbol}
+          </Typography>
+        </Stack>
+        <Typography>{`${high}${degreeSymbol} / ${low}${degreeSymbol}`}</Typography>
       </Stack>
     );
   }

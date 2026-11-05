@@ -7,6 +7,7 @@ import { DailyWeather } from '../../../shared/weather';
 import WeatherCode from './WeatherCode';
 import WeatherItemRow from './WeatherItemRow';
 import { Conversions } from '../../../shared/utilityConversions';
+import { WbTwilight } from '@mui/icons-material';
 
 interface Props {
   store: WeatherStore;
@@ -64,9 +65,9 @@ export default class WeatherSevenDayForecast extends React.Component<
       items.push(
         <Stack
           key={dateString}
-          sx={{
-            width: '100%',
-            justifyContent: 'space-evenly',
+          style={{
+            border: '1px solid #000',
+            borderRadius: 4,
             alignItems: 'center',
           }}
         >
@@ -88,7 +89,7 @@ export default class WeatherSevenDayForecast extends React.Component<
     }
 
     return (
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} style={{ alignSelf: 'center' }}>
         {items}
       </Stack>
     );
@@ -100,7 +101,7 @@ export default class WeatherSevenDayForecast extends React.Component<
     if (Number.isNaN(date.getTime())) return dateString;
 
     return date.toLocaleDateString([], {
-      weekday: 'long',
+      weekday: 'short',
       month: '2-digit',
       day: '2-digit',
     });
@@ -110,8 +111,8 @@ export default class WeatherSevenDayForecast extends React.Component<
     const { store } = this.props;
     const { tempUnit, degreeSymbol } = store;
 
-    const h = Conversions.convertTempUnit(high, tempUnit);
-    const l = Conversions.convertTempUnit(low, tempUnit);
+    const h = Conversions.convertTempUnit(high, tempUnit, 0);
+    const l = Conversions.convertTempUnit(low, tempUnit, 0);
 
     return (
       <Stack direction="row">
@@ -125,9 +126,11 @@ export default class WeatherSevenDayForecast extends React.Component<
 
     if (Number.isNaN(date.getTime())) return timeString;
 
-    return date.toLocaleTimeString([], {
-      hour: 'numeric',
-      minute: '2-digit',
-    });
+    return date
+      .toLocaleTimeString([], {
+        hour: 'numeric',
+        minute: '2-digit',
+      })
+      .replace(/\s?[AP]M$/, '');
   }
 }

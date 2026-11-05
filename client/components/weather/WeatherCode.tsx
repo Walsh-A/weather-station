@@ -18,6 +18,7 @@ import {
 } from '@mui/icons-material';
 import type { SvgIconComponent } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
+
 import { Conversions } from '../../../shared/utilityConversions';
 
 interface Props {
@@ -33,7 +34,7 @@ export default class WeatherCode extends React.Component<Props> {
     return (
       <Stack sx={{ alignItems: 'center' }}>
         {CodeIcon && <CodeIcon style={{ height: 50, width: 50 }} />}
-        <Typography>
+        <Typography style={{ opacity: 0.7 }}>
           {WeatherTools.getWeatherDescription(weatherCode)}
         </Typography>
         {this.renderVisibility()}
@@ -41,6 +42,7 @@ export default class WeatherCode extends React.Component<Props> {
     );
   }
 
+  //TODO: move this elsehwere
   private renderVisibility() {
     const { visibility } = this.props;
 

@@ -56,24 +56,20 @@ export default class WeatherNow extends React.Component<Props, State> {
 
     return (
       <Stack sx={{ margin: 1 }}>
-        <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
-          <Stack direction="row" spacing={3}>
-            <Stack style={{ alignItems: 'start' }}>
-              {this.renderCurrentTemp(degreeUnit)}
-              <WeatherTemperatures
-                currentWeather={cw}
-                dailyWeather={dw}
-                temperatureUnit={tempUnit}
-              />
-              {this.renderPrecipitationLine()}
-            </Stack>
-            <Stack spacing={1}>
-              <WeatherCode
-                weatherCode={cw.weather_code}
-                visibility={cw.visibility}
-              />
-            </Stack>
+        <Stack direction="row">
+          <WeatherCode
+            weatherCode={cw.weather_code}
+            visibility={cw.visibility}
+          />
+          <Stack style={{ textAlign: 'center' }}>
+            {this.renderCurrentTemp(degreeUnit)}
+            <WeatherTemperatures
+              store={store}
+              currentWeather={cw}
+              dailyWeather={dw}
+            />
           </Stack>
+          {this.renderPrecipitationLine()}
           <WeatherWinds currentWeather={cw} speedUnit={store.speedUnit} />
         </Stack>
         <WeatherSunriseSunset dailyWeather={dw} sliderWidth={500} />
