@@ -19,39 +19,22 @@ import {
 import type { SvgIconComponent } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
 
-import { Conversions } from '../../../shared/utilityConversions';
-
 interface Props {
   weatherCode: number;
-  visibility?: number;
 }
 
 export default class WeatherCode extends React.Component<Props> {
   override render() {
     const { weatherCode } = this.props;
     const CodeIcon = this.getCodeIcon();
+    const iconSize = 80;
 
     return (
       <Stack sx={{ alignItems: 'center' }}>
-        {CodeIcon && <CodeIcon style={{ height: 50, width: 50 }} />}
-        <Typography style={{ opacity: 0.7 }}>
+        {CodeIcon && <CodeIcon style={{ height: iconSize, width: iconSize }} />}
+        <Typography style={{ opacity: 0.7 }} variant="body2">
           {WeatherTools.getWeatherDescription(weatherCode)}
         </Typography>
-        {this.renderVisibility()}
-      </Stack>
-    );
-  }
-
-  //TODO: move this elsehwere
-  private renderVisibility() {
-    const { visibility } = this.props;
-
-    if (!visibility) return null;
-
-    return (
-      <Stack direction="row" spacing={1}>
-        <Typography style={{ opacity: 0.5 }}>Visibility</Typography>
-        <Typography>{`${Conversions.meterToMile(Number(visibility), 2)} mi`}</Typography>
       </Stack>
     );
   }

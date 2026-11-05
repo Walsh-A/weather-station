@@ -56,11 +56,8 @@ export default class WeatherNow extends React.Component<Props, State> {
 
     return (
       <Stack sx={{ margin: 1 }}>
-        <Stack direction="row">
-          <WeatherCode
-            weatherCode={cw.weather_code}
-            visibility={cw.visibility}
-          />
+        <Stack direction="row" style={{ justifyContent: 'space-between' }}>
+          <WeatherCode weatherCode={cw.weather_code} />
           <Stack style={{ textAlign: 'center' }}>
             {this.renderCurrentTemp(degreeUnit)}
             <WeatherTemperatures
@@ -97,17 +94,29 @@ export default class WeatherNow extends React.Component<Props, State> {
       cw,
     );
 
+    //TODO: add in rain/snow etc if any exists
+
     return (
-      <Stack direction="row" spacing={1}>
+      <Stack>
         {this.renderDisplayRow('Precipitation', precipitationProb + '%')}
-        <Divider orientation="vertical" style={{ height: 16, width: 4 }} />
-        {/* //todo: add in rain/snow etc if any exists */}
         {this.renderDisplayRow('Humidity', cw.relative_humidity_2m + '%')}
-        <Divider orientation="vertical" style={{ height: 16, width: 4 }} />
         {this.renderDisplayRow(
           'Dew Point',
           `${Conversions.celsiusToFahrenheit(cw.dewpoint_2m)}${this.degreeSymbol}`,
         )}
+        {this.renderVisibility()}
+      </Stack>
+    );
+  }
+
+  private renderVisibility() {
+    const { currentWeather: cw } = this.props;
+    const { visibility } = cw;
+
+    return (
+      <Stack direction="row" spacing={1}>
+        <Typography style={{ opacity: 0.5 }}>Visibility</Typography>
+        <Typography>{`${Conversions.meterToMile(Number(visibility), 2)} mi`}</Typography>
       </Stack>
     );
   }

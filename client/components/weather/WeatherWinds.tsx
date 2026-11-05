@@ -20,7 +20,7 @@ export default class WeatherWinds extends React.Component<Props> {
     return (
       <Stack style={{ alignItems: 'center' }} spacing={1}>
         <Stack direction="row" sx={{ alignItems: 'center' }}>
-          <WindVane currentWeather={cw} compassSize={60} />
+          <WindVane currentWeather={cw} compassSize={100} />
           <Typography>{cw.wind_direction_10m + this.degreeSymbol}</Typography>
         </Stack>
         <Stack direction="row" spacing={1}>

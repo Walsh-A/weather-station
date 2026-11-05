@@ -7,7 +7,6 @@ import { DailyWeather } from '../../../shared/weather';
 import WeatherCode from './WeatherCode';
 import WeatherItemRow from './WeatherItemRow';
 import { Conversions } from '../../../shared/utilityConversions';
-import { WbTwilight } from '@mui/icons-material';
 
 interface Props {
   store: WeatherStore;
