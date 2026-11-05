@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Divider, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import WeatherTemperatures from '../../components/weather/WeatherTemperatures';
 import WeatherWinds from '../../components/weather/WeatherWinds';
@@ -49,7 +49,12 @@ export default class WeatherNow extends React.Component<Props, State> {
   };
 
   override render() {
-    const { store, currentWeather: cw, dailyWeather: dw } = this.props;
+    const {
+      store,
+      currentWeather: cw,
+      dailyWeather: dw,
+      hourlyWeather: hw,
+    } = this.props;
     const { tempUnit } = store;
 
     const degreeUnit = `${this.degreeSymbol}${tempUnit}`;
@@ -67,6 +72,11 @@ export default class WeatherNow extends React.Component<Props, State> {
             />
           </Stack>
           {this.renderPrecipitationLine()}
+          <WeatherPrecipitation
+            currentWeather={cw}
+            hourlyWeather={hw}
+            precipitationUnit={store.precipitationUnit}
+          />
           <WeatherWinds currentWeather={cw} speedUnit={store.speedUnit} />
         </Stack>
         <WeatherSunriseSunset dailyWeather={dw} sliderWidth={500} />
