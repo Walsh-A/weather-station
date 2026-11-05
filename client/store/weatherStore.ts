@@ -3,7 +3,7 @@ import {
   SpeedUnit,
   TemperatureUnit,
   WeatherResponse,
-} from '../../shared/weather/weather';
+} from '../../shared/weather';
 import { BaseStore } from './baseStore';
 import { WeeatherEvents } from './Events';
 

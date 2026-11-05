@@ -3,7 +3,7 @@ import React from 'react';
 import { Stack } from '@mui/material';
 
 import WeatherItemRow from './WeatherItemRow';
-import { CurrentWeather, SpeedUnit } from '../../../shared/weather/weather';
+import { CurrentWeather, SpeedUnit } from '../../../shared/weather';
 import { Conversions } from '../../../shared/utilityConversions';
 import WindVane from './WindVane';
 

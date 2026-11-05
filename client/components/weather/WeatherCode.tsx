@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { WeatherTools } from '../../../shared/weather/weatherTools';
+import { WeatherTools } from '../../../shared/weatherTools';
 import WeatherItemRow from './WeatherItemRow';
+
 import {
   AcUnit,
   Cloud,

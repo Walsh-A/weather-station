@@ -13,9 +13,9 @@ import {
   CurrentWeather,
   DailyWeather,
   HourlyWeather,
-} from '../../../shared/weather/weather';
+} from '../../../shared/weather';
 import { Conversions } from '../../../shared/utilityConversions';
-import { WeatherTools } from '../../../shared/weather/weatherTools';
+import { WeatherTools } from '../../../shared/weatherTools';
 import WindVane from './WindVane';
 
 interface Props {
@@ -51,30 +51,15 @@ export default class WeatherNow extends React.Component<Props, State> {
 
   override render() {
     // todo: get all weather info that is in a METAR
-
-    return (
-      <Stack>
-        {/* //todo: comment this out after creating styalized approach */}
-        {this.renderNewLayout()}
-        <Divider />
-        {this.renderWeatherDataRows()}
-      </Stack>
-    );
-  }
-
-  private renderNewLayout() {
-    const {
-      store,
-      currentWeather: cw,
-      hourlyWeather: hw,
-      dailyWeather: dw,
-    } = this.props;
-    const { tempUnit, speedUnit, precipitationUnit } = store;
+    const { store, currentWeather: cw, dailyWeather: dw } = this.props;
+    const { tempUnit } = store;
 
     const degreeUnit = `${this.degreeSymbol}${tempUnit}`;
 
     return (
       <Stack sx={{ margin: 1 }}>
+        {/* this is for debugging purposes */}
+        {/* {this.renderWeatherDataRows()} */}
         <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
           <Stack direction="row" spacing={3}>
             <Stack style={{ alignItems: 'start' }}>
@@ -190,27 +175,28 @@ export default class WeatherNow extends React.Component<Props, State> {
     );
   }
 
-  private renderWeatherDataRows() {
-    const {
-      store,
-      currentWeather: cw,
-      hourlyWeather: hw,
-      dailyWeather: dw,
-    } = this.props;
-    const { tempUnit, speedUnit, precipitationUnit } = store;
+  //  this is for debugging purposes
+  // private renderWeatherDataRows() {
+  //   const {
+  //     store,
+  //     currentWeather: cw,
+  //     hourlyWeather: hw,
+  //     dailyWeather: dw,
+  //   } = this.props;
+  //   const { tempUnit, speedUnit, precipitationUnit } = store;
 
-    return (
-      <Stack>
-        <WeatherTemperatures currentWeather={cw} temperatureUnit={tempUnit} />
-        <WeatherWinds currentWeather={cw} speedUnit={speedUnit} />
-        <WeatherPrecipitation
-          currentWeather={cw}
-          hourlyWeather={hw}
-          precipitationUnit={precipitationUnit}
-        />
-        <WeatherCode weatherCode={cw.weather_code} dataRow={true} />
-        <WeatherSunriseSunset dailyWeather={dw} />
-      </Stack>
-    );
-  }
+  //   return (
+  //     <Stack>
+  //       <WeatherTemperatures currentWeather={cw} temperatureUnit={tempUnit} />
+  //       <WeatherWinds currentWeather={cw} speedUnit={speedUnit} />
+  //       <WeatherPrecipitation
+  //         currentWeather={cw}
+  //         hourlyWeather={hw}
+  //         precipitationUnit={precipitationUnit}
+  //       />
+  //       <WeatherCode weatherCode={cw.weather_code} dataRow={true} />
+  //       <WeatherSunriseSunset dailyWeather={dw} />
+  //     </Stack>
+  //   );
+  // }
 }

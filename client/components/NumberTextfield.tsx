@@ -1,5 +1,5 @@
-import type { CSSProperties, KeyboardEventHandler } from 'react';
 import React, { createRef } from 'react';
+import type { CSSProperties, KeyboardEventHandler } from 'react';
 
 import type {
   InputBaseComponentProps,

@@ -1,14 +1,12 @@
 import React from 'react';
 
-import { Divider, IconButton, Stack, Typography } from '@mui/material';
+import { IconButton, Stack } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-import Weather from './pages/weather/Weather';
-import WeatherAlert from './pages/weather/WeatherAlerts';
-import News from './pages/news/News';
+import Weather from './pages/Weather';
+import WeatherAlert from './pages/WeatherAlerts';
 import Settings from './pages/Settings';
 import { WeatherStore } from './store/weatherStore';
-import { NewsStore } from './store/newsStore';
 
 interface Props {}
 interface State {
@@ -16,7 +14,6 @@ interface State {
 }
 
 const weatherStore = new WeatherStore();
-const newsStore = new NewsStore();
 
 export default class App extends React.Component<Props, State> {
   constructor(props: object) {
@@ -32,35 +29,18 @@ export default class App extends React.Component<Props, State> {
 
     return (
       <Stack>
-        {this.renderTitleBar()}
         <WeatherAlert />
         <Weather store={weatherStore} />
-        <Divider />
-        <News store={newsStore} />
-        <Settings
-          weatherStore={weatherStore}
-          newsStore={newsStore}
-          isOpen={openSettings}
-          onClose={() => this.setState({ openSettings: false })}
-        />
-      </Stack>
-    );
-  }
-
-  private renderTitleBar() {
-    const { openSettings } = this.state;
-
-    return (
-      <Stack
-        direction="row"
-        sx={{ justifyContent: 'space-between', alignItems: 'center' }}
-      >
-        <Typography variant="h1">Home Station</Typography>
         <IconButton
           onClick={() => this.setState({ openSettings: !openSettings })}
         >
           <SettingsIcon />
         </IconButton>
+        <Settings
+          weatherStore={weatherStore}
+          isOpen={openSettings}
+          onClose={() => this.setState({ openSettings: false })}
+        />
       </Stack>
     );
   }

@@ -3,7 +3,7 @@ import React from 'react';
 import { Divider, Stack, Typography } from '@mui/material';
 
 import { WeatherStore } from '../../store/weatherStore';
-import { DailyWeather } from '../../../shared/weather/weather';
+import { DailyWeather } from '../../../shared/weather';
 import WeatherCode from './WeatherCode';
 import WeatherItemRow from './WeatherItemRow';
 import { Conversions } from '../../../shared/utilityConversions';
@@ -26,16 +26,6 @@ export default class WeatherSevenDayForecast extends React.Component<
   }
 
   override render() {
-    return (
-      <Stack>
-        <Typography>Seven Day Forecast</Typography>
-        <Divider />
-        {this.renderForecast()}
-      </Stack>
-    );
-  }
-
-  private renderForecast() {
     const { store, dailyWeather } = this.props;
     const { tempUnit } = store;
 

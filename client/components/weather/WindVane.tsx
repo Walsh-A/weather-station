@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { CurrentWeather } from '../../../shared/weather/weather';
+import { CurrentWeather } from '../../../shared/weather';
 
 interface Props {
   currentWeather: CurrentWeather;

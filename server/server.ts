@@ -1,8 +1,7 @@
 import express from 'express';
 
-import { getCurrentWeather } from './services/weather/weatherService';
-import { getActiveNwsAlerts } from './services/weather/nwsAlertService';
-import { getLocalNews } from './services/news/newsService';
+import { getActiveNwsAlerts } from './services/nwsAlertService';
+import { getCurrentWeather } from './services/weatherService';
 
 const app = express();
 const PORT = 3001;
@@ -46,21 +45,6 @@ app.get('/api/alerts', async (req, res) => {
 
     res.status(500).json({
       error: 'Failed to retrieve NWS alerts.',
-    });
-  }
-});
-
-// News
-app.get('/api/news', async (req, res) => {
-  try {
-    const news = await getLocalNews();
-
-    res.json(news);
-  } catch (error) {
-    console.error('News feed error:', error);
-
-    res.status(500).json({
-      error: 'Failed to retrieve local news.',
     });
   }
 });

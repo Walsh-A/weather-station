@@ -6,8 +6,8 @@ import {
   CurrentWeather,
   HourlyWeather,
   PrecipitationUnit,
-} from '../../../shared/weather/weather';
-import { WeatherTools } from '../../../shared/weather/weatherTools';
+} from '../../../shared/weather';
+import { WeatherTools } from '../../../shared/weatherTools';
 import WeatherItemRow from '../../components/weather/WeatherItemRow';
 import { Conversions } from '../../../shared/utilityConversions';
 

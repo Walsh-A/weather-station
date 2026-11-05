@@ -2,9 +2,8 @@ import React from 'react';
 
 import { Slider, Stack, Typography } from '@mui/material';
 import { Brightness3, Sunny } from '@mui/icons-material';
-import { CSSProperties } from '@mui/material/styles';
 
-import { DailyWeather } from '../../../shared/weather/weather';
+import { DailyWeather } from '../../../shared/weather';
 import WeatherItemRow from './WeatherItemRow';
 
 interface Props {

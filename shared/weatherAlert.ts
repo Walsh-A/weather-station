@@ -1,12 +1,12 @@
 export class NwsAlertCollection {
-  alerts: NwsAlertFeature[] = [];
+  features: NwsAlertFeature[] = [];
   title: string = '';
   updated: string = '';
 }
 
 export class NwsAlertFeature {
   id: string = '';
-  alertData: NwsAlert = new NwsAlert();
+  properties: NwsAlert = new NwsAlert();
 }
 
 export class NwsAlert {

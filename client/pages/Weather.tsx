@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { Divider, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
+import { WeatherStore } from '../store/weatherStore';
+import { WeeatherEvents } from '../store/Events';
 import {
   CurrentWeather,
   DailyWeather,
   HourlyWeather,
-} from '../../../shared/weather/weather';
-import { weatherStore, WeatherStore } from '../../store/weatherStore';
-import { WeeatherEvents } from '../../store/Events';
-import WeatherSevenDayForecast from '../../components/weather/WeatherSevenDayForecast';
-import WeatherNow from '../../components/weather/WeatherNow';
+} from '../../shared/weather';
+import WeatherNow from '../components/weather/WeatherNow';
+import WeatherSevenDayForecast from '../components/weather/WeatherSevenDayForecast';
 
 interface Props {
   store: WeatherStore;
@@ -52,15 +52,13 @@ export default class Weather extends React.Component<Props, State> {
 
     return (
       <Stack>
-        <Typography>Current Weather</Typography>
-        <Divider />
         <WeatherNow
           store={store}
           currentWeather={cw}
           hourlyWeather={hw}
           dailyWeather={dw}
         />
-        <WeatherSevenDayForecast store={weatherStore} dailyWeather={dw} />
+        <WeatherSevenDayForecast store={store} dailyWeather={dw} />
         {this.renderLastUpdated(cw)}
       </Stack>
     );

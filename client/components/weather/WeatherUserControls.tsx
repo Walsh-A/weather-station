@@ -6,11 +6,12 @@ import {
   ToggleButtonGroup,
   Typography,
 } from '@mui/material';
+
 import {
   PrecipitationUnit,
   SpeedUnit,
   TemperatureUnit,
-} from '../../../shared/weather/weather';
+} from '../../../shared/weather';
 import { WeatherStore } from '../../store/weatherStore';
 import { WeeatherEvents } from '../../store/Events';
 

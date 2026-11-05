@@ -2,10 +2,7 @@ import React from 'react';
 
 import { Stack } from '@mui/material';
 
-import {
-  CurrentWeather,
-  TemperatureUnit,
-} from '../../../shared/weather/weather';
+import { CurrentWeather, TemperatureUnit } from '../../../shared/weather';
 import WeatherItemRow from './WeatherItemRow';
 import { Conversions } from '../../../shared/utilityConversions';
 

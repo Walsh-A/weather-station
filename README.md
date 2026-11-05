@@ -8,35 +8,34 @@ Open [http://localhost:8080](http://localhost:8080) to see the app.
 Run `bun run build` to create a production bundle, `bun run typecheck` to check TypeScript, and
 `bun run format:check` to verify formatting.
 
-**Your world, at a glance.**
+**Your weather, at a glance.**
 
-Home Station is an always-on, home information dashboard designed to display relevant news, alerts, and activity happening in your local area.
+Home Station is an always-on weather dashboard designed to display current conditions, forecasts, and severe weather alerts for your location.
 
-Inspired by dedicated flight-tracking displays, Home Station aims to bring the same concept to everyday local awareness through a small, countertop screen.
+Inspired by dedicated flight-tracking displays, Home Station brings at-a-glance weather information to a small, countertop screen.
 
 ## Planned Features
 
-- **Local News** — Headlines and breaking stories from nearby news sources.
-- **Weather** — Current conditions, forecasts, and severe weather alerts.
-- **Traffic** — Nearby incidents, road closures, and traffic updates.
-- **Local Alerts** — Emergency notifications and other important area information.
-- **Community** — Local events, announcements, and happenings.
-- **Customizable Location** — Relevant information based on a configured city, region, or radius.
+- **Current Conditions** — Temperature, humidity, precipitation, and wind.
+- **Forecasts** — Hourly and seven-day weather outlooks.
+- **Severe Weather Alerts** — Active watches, warnings, and advisories.
+- **Sunrise and Sunset** — Daily solar times for the selected location.
+- **Customizable Location** — Weather information for a configured location.
 
 ## Project Goals
 
-The goal is to create a clean, passive information display that provides useful updates without requiring constant interaction.
+The goal is to create a clean, passive weather display that provides useful updates without requiring constant interaction.
 
 Home Station should be:
 
 - Simple and easy to read at a glance.
 - Capable of running continuously on dedicated hardware.
-- Focused on relevant, location-based information.
-- Modular enough to support additional information sources over time.
+- Focused exclusively on relevant, location-based weather information.
+- Modular enough to support additional weather data and views over time.
 
 ## Hardware
 
-The current concept is a small countertop display powered by a Raspberry Pi or similar device, running a web-based dashboard in kiosk mode.
+The current concept is a small countertop weather display powered by a Raspberry Pi or similar device, running a web-based dashboard in kiosk mode.
 
 Hardware and software requirements are still being evaluated.
 
@@ -48,4 +47,4 @@ Home Station is currently in the initial design and planning phase. Features, te
 
 ---
 
-_Stay connected to what's happening around home._
+_Stay ahead of the weather at home._

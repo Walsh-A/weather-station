@@ -2,10 +2,7 @@ import React from 'react';
 
 import { Alert, Stack, Typography } from '@mui/material';
 
-import {
-  NwsAlertCollection,
-  NwsAlertFeature,
-} from '../../../shared/weather/weatherAlert';
+import { NwsAlertCollection, NwsAlertFeature } from '../../shared/weatherAlert';
 
 interface Props {}
 
@@ -28,7 +25,7 @@ export default class WeatherAlert extends React.Component<Props, State> {
 
   async loadWeatherAlerts() {
     try {
-      const response = await fetch('/api/weatherAlert');
+      const response = await fetch('/api/alerts');
 
       if (!response.ok) {
         throw new Error('Failed to retrieve weather alert data.');
@@ -50,25 +47,27 @@ export default class WeatherAlert extends React.Component<Props, State> {
   override render() {
     const { weatherAlerts } = this.state;
 
-    if (!weatherAlerts.alerts.length) return null;
+    if (!weatherAlerts.features.length) return null;
 
     return (
       <Stack spacing={1}>
-        {weatherAlerts.alerts.map((alert) => this.renderWeatherAlert(alert))}
+        {weatherAlerts.features.map((alert) =>
+          this.renderWeatherAlert(alert),
+        )}
       </Stack>
     );
   }
 
   private renderWeatherAlert(alert: NwsAlertFeature) {
-    const { alertData } = alert;
+    const { properties } = alert;
 
     return (
       <Alert key={alert.id} severity="warning">
         <Stack>
-          <Typography sx={{ fontWeight: 'bold' }}>{alertData.event}</Typography>
-          {alertData.headline && <Typography>{alertData.headline}</Typography>}
-          {alertData.areaDesc && (
-            <Typography variant="body2">{alertData.areaDesc}</Typography>
+          <Typography sx={{ fontWeight: 'bold' }}>{properties.event}</Typography>
+          {properties.headline && <Typography>{properties.headline}</Typography>}
+          {properties.areaDesc && (
+            <Typography variant="body2">{properties.areaDesc}</Typography>
           )}
         </Stack>
       </Alert>

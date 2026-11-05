@@ -3,7 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "rspack serve --mode development",
+    "dev": "bun run --parallel dev:server dev:client",
+    "dev:client": "rspack serve --mode development",
+    "dev:server": "tsx watch server/server.ts",
     "build": "rspack build --mode production",
     "server": "tsx watch server/server.ts",
     "typecheck": "tsc --noEmit",
