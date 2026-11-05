@@ -26,7 +26,6 @@ export default class DisplayFrame extends React.Component<Props, State> {
         sx={{
           height: this.height,
           width: this.width,
-          //   overflow: 'hidden',
           // TODO: border only for testing purposes, remove for production
           border: '1px solid #000',
         }}

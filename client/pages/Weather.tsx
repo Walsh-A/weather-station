@@ -70,12 +70,8 @@ export default class Weather extends React.Component<Props, State> {
     const updatedDate = new Date(`${cw.time}z`);
 
     return (
-      <Stack direction="row" spacing={1}>
-        <Typography>updated</Typography>
-        <Stack direction="row" spacing={1}>
-          <Typography>{updatedDate.toLocaleDateString()}</Typography>
-          <Typography>{updatedDate.toLocaleTimeString()}</Typography>
-        </Stack>
+      <Stack direction="row" spacing={1} style={{ alignSelf: 'end' }}>
+        <Typography variant="caption">{`UPDATED ${updatedDate.toLocaleDateString()} ${updatedDate.toLocaleTimeString()}`}</Typography>
       </Stack>
     );
   }
