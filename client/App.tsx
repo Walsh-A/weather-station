@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { IconButton, Stack } from '@mui/material';
+import { IconButton } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 
 import Weather from './pages/Weather';
 import WeatherAlert from './pages/WeatherAlerts';
 import Settings from './pages/Settings';
 import { WeatherStore } from './store/weatherStore';
+import DisplayFrame from './components/weather/DisplayFrame';
 
 interface Props {}
 interface State {
@@ -28,7 +29,7 @@ export default class App extends React.Component<Props, State> {
     const { openSettings } = this.state;
 
     return (
-      <Stack>
+      <DisplayFrame>
         <WeatherAlert />
         <Weather store={weatherStore} />
         <IconButton
@@ -41,7 +42,7 @@ export default class App extends React.Component<Props, State> {
           isOpen={openSettings}
           onClose={() => this.setState({ openSettings: false })}
         />
-      </Stack>
+      </DisplayFrame>
     );
   }
 }

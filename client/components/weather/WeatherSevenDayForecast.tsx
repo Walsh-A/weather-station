@@ -26,8 +26,7 @@ export default class WeatherSevenDayForecast extends React.Component<
   }
 
   override render() {
-    const { store, dailyWeather } = this.props;
-    const { tempUnit } = store;
+    const { dailyWeather } = this.props;
 
     const {
       time,
