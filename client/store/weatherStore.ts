@@ -65,6 +65,10 @@ export class WeatherStore extends BaseStore {
     this._precipitationUnit = value;
     this.callEmit(WeeatherEvents.WeatherSettings);
   }
+
+  get degreeSymbol(): string {
+    return '\u00B0';
+  }
 }
 
 export const weatherStore = new WeatherStore();

@@ -65,26 +65,21 @@ export default class WeatherSevenDayForecast extends React.Component<
       items.push(
         <Stack
           key={dateString}
-          sx={{ width: '100%', justifyContent: 'space-evenly' }}
+          sx={{
+            width: '100%',
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
+          }}
         >
           <Typography>{this.formatForecastDate(dateString)}</Typography>
           <WeatherCode weatherCode={weatherCode} />
+          {this.renderTemps(highTemperature, lowTemperature)}
           <WeatherItemRow
-            label="High:"
-            value={Conversions.convertTempUnit(highTemperature, tempUnit)}
-            unit={tempUnit}
-          />
-          <WeatherItemRow
-            label="Low:"
-            value={Conversions.convertTempUnit(lowTemperature, tempUnit)}
-            unit={tempUnit}
-          />
-          <WeatherItemRow
-            label="Chance of Precipitation:"
+            label="Precip:"
             value={precipitationProbability}
             unit="%"
           />
-          <Typography>
+          <Typography variant="caption">
             {`${this.formatUtcTime(sunriseTime)} - ${this.formatUtcTime(
               sunsetTime,
             )}`}
@@ -110,6 +105,20 @@ export default class WeatherSevenDayForecast extends React.Component<
       month: '2-digit',
       day: '2-digit',
     });
+  }
+
+  private renderTemps(high: number, low: number) {
+    const { store } = this.props;
+    const { tempUnit, degreeSymbol } = store;
+
+    const h = Conversions.convertTempUnit(high, tempUnit);
+    const l = Conversions.convertTempUnit(low, tempUnit);
+
+    return (
+      <Stack direction="row">
+        <Typography>{`${h}${degreeSymbol} / ${l}${degreeSymbol}`}</Typography>
+      </Stack>
+    );
   }
 
   private formatUtcTime(timeString: string): string {
