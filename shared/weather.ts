@@ -14,6 +14,9 @@ export class CurrentWeather {
   temperature_2m: number = 0; // degrees in C
   apparent_temperature: number = 0; // degrees in C
   relative_humidity_2m: number = 0; //%
+  dewpoint_2m: number = 0; // degrees in C
+  visibility: number = 0; // meters
+  pressure_msl: number = 0; // hPa
 
   weather_code: number = 0;
 

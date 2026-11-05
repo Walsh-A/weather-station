@@ -46,6 +46,12 @@ export class Conversions {
     return mm / 25.4;
   }
 
+  static meterToMile(meters: number, round: number = 2) {
+    if (isNaN(meters)) return null;
+
+    return Number((meters / 1609.344).toFixed(round));
+  }
+
   static convertPrecipitationUnits(
     value_mm: number,
     precipUnit: PrecipitationUnit,
@@ -53,5 +59,12 @@ export class Conversions {
     if (precipUnit === PrecipitationUnit.mm) return value_mm;
 
     return Conversions.millimeterToInch(value_mm) ?? value_mm;
+  }
+
+  // #region Pressure
+  static convertPascalToInHg(pressure_hPa: number, round: number = 2) {
+    if (isNaN(pressure_hPa)) return null;
+
+    return Number(pressure_hPa * 0.0295299830714).toFixed(round);
   }
 }

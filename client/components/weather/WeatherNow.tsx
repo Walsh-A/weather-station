@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Divider, Stack, Typography } from '@mui/material';
 
-import WeatherTemperatures from '../../components/weather/WeatherTemperatures';
-import WeatherWinds from '../../components/weather/WeatherWinds';
-import WeatherPrecipitation from '../../components/weather/WeatherPrecipitation';
+// import WeatherTemperatures from '../../components/weather/WeatherTemperatures';
+// import WeatherWinds from '../../components/weather/WeatherWinds';
+// import WeatherPrecipitation from '../../components/weather/WeatherPrecipitation';
 import WeatherCode from '../../components/weather/WeatherCode';
 import { WeatherStore } from '../../store/weatherStore';
 import WeatherSunriseSunset from '../../components/weather/WeatherSunriseSunset';
@@ -68,7 +68,10 @@ export default class WeatherNow extends React.Component<Props, State> {
               {this.renderPrecipitationLine()}
             </Stack>
             <Stack spacing={1}>
-              <WeatherCode weatherCode={cw.weather_code} />
+              <WeatherCode
+                weatherCode={cw.weather_code}
+                visibility={cw.visibility}
+              />
             </Stack>
           </Stack>
           <Stack>{this.renderWindLIne()}</Stack>
@@ -136,6 +139,11 @@ export default class WeatherNow extends React.Component<Props, State> {
         <Divider orientation="vertical" style={{ height: 16, width: 4 }} />
         {/* //todo: add in rain/snow etc if any exists */}
         {this.renderDisplayRow('Humidity', cw.relative_humidity_2m + '%')}
+        <Divider orientation="vertical" style={{ height: 16, width: 4 }} />
+        {this.renderDisplayRow(
+          'Dew Point',
+          `${Conversions.celsiusToFahrenheit(cw.dewpoint_2m)}${this.degreeSymbol}`,
+        )}
       </Stack>
     );
   }
@@ -150,7 +158,6 @@ export default class WeatherNow extends React.Component<Props, State> {
           <WindVane currentWeather={cw} compassSize={60} />
           <Typography>{cw.wind_direction_10m + this.degreeSymbol}</Typography>
         </Stack>
-
         <Stack direction="row" spacing={1}>
           {this.renderDisplayRow(
             'Wind',
@@ -162,11 +169,16 @@ export default class WeatherNow extends React.Component<Props, State> {
             `${Conversions.convertSpeedUnits(cw.wind_gusts_10m, speedUnit)} ${speedUnit}`,
           )}
         </Stack>
+        {this.renderDisplayRow(
+          'Pressure',
+          `${Conversions.convertPascalToInHg(cw.pressure_msl)} inHg`,
+        )}
       </Stack>
     );
   }
 
   private renderDisplayRow(label: string, value: string | number) {
+    // todo make this a reusable component that can be used in other places
     return (
       <Stack direction="row" spacing={1}>
         <Typography style={{ opacity: 0.5 }}>{label}</Typography>

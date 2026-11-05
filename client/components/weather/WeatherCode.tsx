@@ -19,9 +19,11 @@ import {
 } from '@mui/icons-material';
 import type { SvgIconComponent } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
+import { Conversions } from '../../../shared/utilityConversions';
 
 interface Props {
   weatherCode: number;
+  visibility?: number;
   dataRow?: boolean;
 }
 
@@ -40,6 +42,19 @@ export default class WeatherCode extends React.Component<Props> {
         <Typography>
           {WeatherTools.getWeatherDescription(weatherCode)}
         </Typography>
+
+        {this.renderVisibility()}
+      </Stack>
+    );
+  }
+
+  private renderVisibility() {
+    const { visibility } = this.props;
+
+    return (
+      <Stack direction="row" spacing={1}>
+        <Typography style={{ opacity: 0.5 }}>Visibility</Typography>
+        <Typography>{`${Conversions.meterToMile(Number(visibility), 2)} mi`}</Typography>
       </Stack>
     );
   }
