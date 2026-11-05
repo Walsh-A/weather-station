@@ -1,47 +1,62 @@
 import React from 'react';
 
-import { Stack } from '@mui/material';
+import { Divider, Stack, Typography } from '@mui/material';
 
-import { CurrentWeather, TemperatureUnit } from '../../../shared/weather';
-import WeatherItemRow from './WeatherItemRow';
+import {
+  CurrentWeather,
+  DailyWeather,
+  TemperatureUnit,
+} from '../../../shared/weather';
 import { Conversions } from '../../../shared/utilityConversions';
 
 interface Props {
   currentWeather: CurrentWeather;
+  dailyWeather: DailyWeather;
   temperatureUnit: TemperatureUnit;
 }
 
 export default class WeatherTemperatures extends React.Component<Props> {
-  private readonly degreeSymbol = '\u00B0';
-
   override render() {
-    const { currentWeather, temperatureUnit } = this.props;
-
-    const degreeUnit = `${this.degreeSymbol}${temperatureUnit}`;
+    const {
+      currentWeather: cw,
+      dailyWeather: dw,
+      temperatureUnit: tempUnit,
+    } = this.props;
 
     return (
-      <Stack>
-        <WeatherItemRow
-          label="Current Temp:"
-          value={Conversions.convertTempUnit(
-            currentWeather.temperature_2m,
-            temperatureUnit,
-          )}
-          unit={degreeUnit}
-        />
-        <WeatherItemRow
-          label="Feels Like"
-          value={Conversions.convertTempUnit(
-            currentWeather.apparent_temperature,
-            temperatureUnit,
-          )}
-          unit={degreeUnit}
-        />
-        <WeatherItemRow
-          label="Humidity:"
-          value={currentWeather.relative_humidity_2m}
-          unit="%"
-        />
+      <Stack direction="row" spacing={1}>
+        {this.renderDisplayRow(
+          'Feels Like',
+          Conversions.convertTempUnit(cw.apparent_temperature, tempUnit, 0),
+        )}
+        <Divider orientation="vertical" style={{ height: 16, width: 4 }} />
+        {this.renderDisplayRow(
+          'H',
+          Conversions.convertTempUnit(
+            Number(dw.temperature_2m_max[0]),
+            tempUnit,
+            0,
+          ),
+        )}
+        <Divider orientation="vertical" style={{ height: 16, width: 4 }} />
+        {this.renderDisplayRow(
+          'L',
+          Conversions.convertTempUnit(
+            Number(dw.temperature_2m_min[0]),
+            tempUnit,
+            0,
+          ),
+        )}
+      </Stack>
+    );
+  }
+
+  private renderDisplayRow(label: string, value: string | number) {
+    // todo make this a reusable component that can be used in other places
+    return (
+      <Stack direction="row" spacing={1}>
+        <Typography style={{ opacity: 0.5 }}>{label}</Typography>
+        <Typography>{value}</Typography>
       </Stack>
     );
   }

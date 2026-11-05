@@ -30,7 +30,8 @@ export default class WeatherPrecipitation extends React.Component<Props> {
       cw,
     );
 
-    // TODO: id no precipitation values dont show the labels
+    // TODO: if no precipitation values dont show the labels
+    // TODO: display on weather page when values
 
     return (
       <Stack>

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { WeatherTools } from '../../../shared/weatherTools';
-import WeatherItemRow from './WeatherItemRow';
 
 import {
   AcUnit,
@@ -24,17 +23,12 @@ import { Conversions } from '../../../shared/utilityConversions';
 interface Props {
   weatherCode: number;
   visibility?: number;
-  dataRow?: boolean;
 }
 
 export default class WeatherCode extends React.Component<Props> {
   override render() {
-    const { weatherCode, dataRow } = this.props;
+    const { weatherCode } = this.props;
     const CodeIcon = this.getCodeIcon();
-
-    if (dataRow) {
-      return this.renderCodeRowData();
-    }
 
     return (
       <Stack sx={{ alignItems: 'center' }}>
@@ -42,7 +36,6 @@ export default class WeatherCode extends React.Component<Props> {
         <Typography>
           {WeatherTools.getWeatherDescription(weatherCode)}
         </Typography>
-
         {this.renderVisibility()}
       </Stack>
     );
@@ -51,24 +44,13 @@ export default class WeatherCode extends React.Component<Props> {
   private renderVisibility() {
     const { visibility } = this.props;
 
+    if (!visibility) return null;
+
     return (
       <Stack direction="row" spacing={1}>
         <Typography style={{ opacity: 0.5 }}>Visibility</Typography>
         <Typography>{`${Conversions.meterToMile(Number(visibility), 2)} mi`}</Typography>
       </Stack>
-    );
-  }
-
-  private renderCodeRowData() {
-    const { weatherCode } = this.props;
-    const CodeIcon = this.getCodeIcon();
-
-    return (
-      <WeatherItemRow
-        label="Weather Code:"
-        value={`${weatherCode} - ${WeatherTools.getWeatherDescription(weatherCode)}`}
-        icon={CodeIcon && <CodeIcon />}
-      />
     );
   }
 

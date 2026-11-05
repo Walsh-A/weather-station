@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Divider, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 
 import { WeatherStore } from '../../store/weatherStore';
 import { DailyWeather } from '../../../shared/weather';
@@ -68,7 +68,7 @@ export default class WeatherSevenDayForecast extends React.Component<
           sx={{ width: '100%', justifyContent: 'space-evenly' }}
         >
           <Typography>{this.formatForecastDate(dateString)}</Typography>
-          <WeatherCode weatherCode={weatherCode} dataRow={true} />
+          <WeatherCode weatherCode={weatherCode} />
           <WeatherItemRow
             label="High:"
             value={Conversions.convertTempUnit(highTemperature, tempUnit)}

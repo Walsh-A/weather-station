@@ -8,7 +8,7 @@ import WeatherItemRow from './WeatherItemRow';
 
 interface Props {
   dailyWeather: DailyWeather;
-  sliderWidth?: number;
+  sliderWidth: number;
 }
 interface State {}
 
