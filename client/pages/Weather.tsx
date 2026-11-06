@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { IconButton, Stack, Typography } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
+import { Stack, Typography } from '@mui/material';
 
 import Settings from '../pages/Settings';
 import { WeatherStore } from '../store/WeatherStore';
@@ -22,29 +21,56 @@ interface State {}
 const store = new WeatherStore();
 
 export default class Weather extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = { openSettings: false };
-  }
-
   override componentDidMount() {
     void store.loadData();
 
     store.addEventListener(WeeatherEvents.WeatherUpdate, this.update);
     store.addEventListener(WeeatherEvents.WeatherSettings, this.update);
     store.addEventListener(WeeatherEvents.WeatherSettingsOpen, this.update);
+    window.addEventListener('keydown', this.handleKeyDown);
   }
 
   override componentWillUnmount() {
     store.removeEventListener(WeeatherEvents.WeatherUpdate, this.update);
     store.removeEventListener(WeeatherEvents.WeatherSettings, this.update);
     store.removeEventListener(WeeatherEvents.WeatherSettingsOpen, this.update);
+    window.removeEventListener('keydown', this.handleKeyDown);
   }
 
   private update = () => {
     this.forceUpdate();
   };
+
+  private handleKeyDown = (event: KeyboardEvent) => {
+    const { settingsOpen } = store;
+
+    if (event.key === 'Escape' && settingsOpen) {
+      store.settingsOpen = false;
+      return;
+    }
+
+    if (
+      event.key.toLowerCase() !== 's' ||
+      settingsOpen ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.altKey ||
+      this.isEditableTarget(event.target)
+    ) {
+      return;
+    }
+
+    store.settingsOpen = true;
+  };
+
+  private isEditableTarget(target: EventTarget | null) {
+    if (!(target instanceof HTMLElement)) return false;
+
+    return (
+      target.isContentEditable ||
+      ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)
+    );
+  }
 
   override render() {
     const { settingsOpen, zipCode } = store;
@@ -64,21 +90,18 @@ export default class Weather extends React.Component<Props, State> {
     const dw: DailyWeather = weather?.daily;
 
     return (
-      <>
-        <Stack>
-          <TimeLocationInfo store={store} />
-          <WeatherAlert />
-          <WeatherNow
-            store={store}
-            currentWeather={cw}
-            hourlyWeather={hw}
-            dailyWeather={dw}
-          />
-          <WeatherSevenDayForecast store={store} dailyWeather={dw} />
-          {this.renderLastUpdated(cw)}
-        </Stack>
-        {this.renderSettingsButton()}
-      </>
+      <Stack>
+        <TimeLocationInfo store={store} />
+        <WeatherAlert />
+        <WeatherNow
+          store={store}
+          currentWeather={cw}
+          hourlyWeather={hw}
+          dailyWeather={dw}
+        />
+        <WeatherSevenDayForecast store={store} dailyWeather={dw} />
+        {this.renderLastUpdated(cw)}
+      </Stack>
     );
   }
 
@@ -91,16 +114,6 @@ export default class Weather extends React.Component<Props, State> {
       <Stack direction="row" spacing={1} style={{ alignSelf: 'end' }}>
         <Typography variant="caption">{`UPDATED ${updatedDate.toLocaleDateString()} ${updatedDate.toLocaleTimeString()}`}</Typography>
       </Stack>
-    );
-  }
-
-  private renderSettingsButton() {
-    const { settingsOpen } = store;
-
-    return (
-      <IconButton onClick={() => (store.settingsOpen = !settingsOpen)}>
-        <SettingsIcon />
-      </IconButton>
     );
   }
 }
