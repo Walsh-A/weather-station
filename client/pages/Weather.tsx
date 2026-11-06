@@ -16,11 +16,17 @@ import WeatherAlert from './WeatherAlerts';
 import TimeLocationInfo from '../components/TimeLocationInfo';
 
 interface Props {}
-interface State {}
+interface State {
+  alertsVisible: boolean;
+}
 
 const store = new WeatherStore();
 
 export default class Weather extends React.Component<Props, State> {
+  override state: State = {
+    alertsVisible: false,
+  };
+
   override componentDidMount() {
     void store.loadData();
 
@@ -39,6 +45,10 @@ export default class Weather extends React.Component<Props, State> {
 
   private update = () => {
     this.forceUpdate();
+  };
+
+  private handleAlertVisibilityChange = (alertsVisible: boolean) => {
+    this.setState({ alertsVisible });
   };
 
   private handleKeyDown = (event: KeyboardEvent) => {
@@ -92,15 +102,25 @@ export default class Weather extends React.Component<Props, State> {
     return (
       <Stack sx={{ height: '100%' }}>
         <TimeLocationInfo store={store} />
-        <WeatherAlert />
-        <WeatherNow
-          store={store}
-          currentWeather={cw}
-          hourlyWeather={hw}
-          dailyWeather={dw}
-        />
-        <WeatherSevenDayForecast store={store} dailyWeather={dw} />
-        {this.renderLastUpdated(cw)}
+        <WeatherAlert onVisibilityChange={this.handleAlertVisibilityChange} />
+        <Stack sx={{ flex: 1, minHeight: 0 }}>
+          <WeatherNow
+            store={store}
+            currentWeather={cw}
+            hourlyWeather={hw}
+            dailyWeather={dw}
+          />
+          <Stack
+            sx={{
+              alignItems: 'center',
+              flex: 1,
+              justifyContent: 'center',
+            }}
+          >
+            <WeatherSevenDayForecast store={store} dailyWeather={dw} />
+          </Stack>
+          {this.renderLastUpdated(cw)}
+        </Stack>
       </Stack>
     );
   }
@@ -108,13 +128,20 @@ export default class Weather extends React.Component<Props, State> {
   private renderLastUpdated(cw: CurrentWeather) {
     if (!cw?.time) return null;
 
+    const { alertsVisible } = this.state;
     const updatedDate = new Date(`${cw.time}z`);
 
     return (
       <Stack
         direction="row"
         spacing={1}
-        sx={{ alignSelf: 'end', mt: 'auto', mr: 1, opacity: 0.5 }}
+        sx={{
+          alignSelf: 'end',
+          mb: alertsVisible ? 0.5 : 0,
+          mr: 1,
+          mt: -0.25,
+          opacity: 0.5,
+        }}
       >
         <Typography variant="caption">{`UPDATED ${updatedDate.toLocaleDateString()} ${updatedDate.toLocaleTimeString()}`}</Typography>
       </Stack>
