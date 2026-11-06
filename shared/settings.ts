@@ -2,6 +2,7 @@ export class Settings {
   tempUnit: TemperatureUnit = TemperatureUnit.F;
   speedUnit: SpeedUnit = SpeedUnit.MPH;
   precipitationUnit: PrecipitationUnit = PrecipitationUnit.in;
+  zipCode: number | null = null;
 }
 
 export enum TemperatureUnit {

@@ -1,28 +1,69 @@
 import React from 'react';
 
-import { Divider, IconButton, Stack, Typography } from '@mui/material';
-import { Close } from '@mui/icons-material';
+import {
+  Button,
+  Divider,
+  Stack,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from '@mui/material';
 
-import WeatherUserControls from '../components/weather/WeatherUserControls';
 import { WeatherStore } from '../store/weatherStore';
+import {
+  PrecipitationUnit,
+  SpeedUnit,
+  TemperatureUnit,
+} from '../../shared/settings';
+import { WeeatherEvents } from '../store/Events';
+import NumberTextField from '../components/NumberTextField';
 
 interface Props {
   store: WeatherStore;
 }
-interface State {}
+interface State {
+  tempUnit: TemperatureUnit;
+  speedUnit: SpeedUnit;
+  precipitationUnit: PrecipitationUnit;
+  zipCode: number | null;
+}
 
 export default class Settings extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.state = {};
+    const { store } = props;
+
+    this.state = {
+      tempUnit: store.tempUnit,
+      speedUnit: store.speedUnit,
+      precipitationUnit: store.precipitationUnit,
+      zipCode: store.zipCode,
+    };
   }
 
-  override componentDidMount() {}
+  override componentDidMount() {
+    const { store } = this.props;
+    store.addEventListener(WeeatherEvents.WeatherSettings, this.update);
+  }
 
-  override render() {
+  override componentWillUnmount() {
+    const { store } = this.props;
+    store.removeEventListener(WeeatherEvents.WeatherSettings, this.update);
+  }
+
+  private update = () => {
     const { store } = this.props;
 
+    this.setState({
+      tempUnit: store.tempUnit,
+      speedUnit: store.speedUnit,
+      precipitationUnit: store.precipitationUnit,
+      zipCode: store.zipCode,
+    });
+  };
+
+  override render() {
     return (
       <Stack
         sx={{
@@ -31,28 +72,182 @@ export default class Settings extends React.Component<Props, State> {
           width: '100%',
         }}
       >
-        {this.renderWeatherSettings()}
-        <IconButton
-          sx={{ position: 'absolute', right: 8, top: 8 }}
-          onClick={() => (store.settingsOpen = false)}
-        >
-          <Close />
-        </IconButton>
+        <Stack spacing={1} sx={{ maxWidth: 452, width: '100%' }}>
+          <Typography variant="h2" sx={{ textAlign: 'center' }}>
+            Weather Settings
+          </Typography>
+          <Divider />
+          <Stack spacing={1} sx={{ alignSelf: 'center', width: 'fit-content' }}>
+            {this.renderZipCode()}
+            {this.renderTempUnitToggle()}
+            {this.renderSpeedUnitToggle()}
+            {this.renderPrecipitationToggle()}
+            {this.renderButtons()}
+          </Stack>
+        </Stack>
       </Stack>
     );
   }
 
-  private renderWeatherSettings() {
-    const { store } = this.props;
+  private renderZipCode() {
+    const { zipCode } = this.state;
 
     return (
-      <Stack spacing={1} sx={{ maxWidth: 452, width: '100%' }}>
-        <Typography variant="h2" sx={{ textAlign: 'center' }}>
-          Weather Settings
-        </Typography>
-        <Divider />
-        <WeatherUserControls store={store} />
+      <Stack direction="row" sx={{ alignItems: 'center' }} spacing={1}>
+        <Typography>Zip Code</Typography>
+        <NumberTextField
+          value={zipCode}
+          validate={(value: string) => value.length === 5}
+          onValid={(value: number) => this.setState({ zipCode: value })}
+          correctError={() => zipCode}
+          clearOnFocus={true}
+          // style?: CSSProperties;
+        />
       </Stack>
+    );
+  }
+
+  private renderTempUnitToggle() {
+    const { tempUnit } = this.state;
+    const tempUnits = Object.values(TemperatureUnit);
+
+    return this.renderLabelAndToggleRow(
+      'Temperature Unit',
+      this.renderToggleButtonGroup(
+        tempUnits,
+        tempUnit,
+        (value: TemperatureUnit) => {
+          this.setState({ tempUnit: value });
+        },
+      ),
+    );
+  }
+
+  private renderSpeedUnitToggle() {
+    const { speedUnit } = this.state;
+    const speedUnits = Object.values(SpeedUnit);
+
+    return this.renderLabelAndToggleRow(
+      'Speed Unit',
+      this.renderToggleButtonGroup(
+        speedUnits,
+        speedUnit,
+        (value: SpeedUnit) => {
+          this.setState({ speedUnit: value });
+        },
+      ),
+    );
+  }
+
+  private renderPrecipitationToggle() {
+    const { precipitationUnit } = this.state;
+    const precipitationUnits = Object.values(PrecipitationUnit);
+
+    return this.renderLabelAndToggleRow(
+      'Precipitation Unit',
+      this.renderToggleButtonGroup(
+        precipitationUnits,
+        precipitationUnit,
+        (value: PrecipitationUnit) => {
+          this.setState({ precipitationUnit: value });
+        },
+      ),
+    );
+  }
+
+  private renderButtons() {
+    const { store } = this.props;
+    const { tempUnit, speedUnit, precipitationUnit, zipCode } = this.state;
+
+    return (
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{ justifyContent: 'center', pt: 0.5 }}
+      >
+        <Button
+          variant="outlined"
+          sx={{
+            borderColor: 'black',
+            color: 'black',
+          }}
+          onClick={() => (store.settingsOpen = false)}
+        >
+          Cancel
+        </Button>
+        <Button
+          disableElevation
+          variant="contained"
+          sx={{
+            backgroundColor: 'black',
+            color: 'white',
+          }}
+          onClick={() =>
+            void store.saveSettings(
+              tempUnit,
+              speedUnit,
+              precipitationUnit,
+              zipCode,
+            )
+          }
+        >
+          Save
+        </Button>
+      </Stack>
+    );
+  }
+
+  private renderLabelAndToggleRow(label: string, toggle: React.ReactNode) {
+    const labelWidth = 150;
+
+    return (
+      <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+        <Typography style={{ width: labelWidth }}>{label}</Typography>
+        {toggle}
+      </Stack>
+    );
+  }
+
+  private renderToggleButtonGroup(
+    unitArray: any[],
+    selectedUnit: any,
+    onChange: (value: any) => void,
+  ) {
+    const items = [];
+
+    for (let unit of unitArray) {
+      items.push(
+        <ToggleButton key={unit} value={unit}>
+          {unit}
+        </ToggleButton>,
+      );
+    }
+
+    return (
+      <ToggleButtonGroup
+        exclusive
+        size="small"
+        value={selectedUnit}
+        sx={{
+          width: 112,
+          height: 32,
+          flexShrink: 0,
+          '& .MuiToggleButton-root': {
+            flex: 1,
+            minWidth: 0,
+            px: 1,
+            py: 0.25,
+            lineHeight: 1.2,
+          },
+        }}
+        onChange={(_event, value: any[] | null) => {
+          if (value !== null) {
+            onChange(value);
+          }
+        }}
+      >
+        {items}
+      </ToggleButtonGroup>
     );
   }
 }

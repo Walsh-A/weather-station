@@ -13,6 +13,7 @@ export class WeatherStore extends BaseStore {
   private _tempUnit: TemperatureUnit = TemperatureUnit.F;
   private _speedUnit: SpeedUnit = SpeedUnit.MPH;
   private _precipitationUnit: PrecipitationUnit = PrecipitationUnit.in;
+  private _zipCode: number | null = null;
 
   private _settingsOpen: boolean = false;
 
@@ -85,6 +86,13 @@ export class WeatherStore extends BaseStore {
     this._precipitationUnit = value;
   }
 
+  get zipCode(): number | null {
+    return this._zipCode;
+  }
+  set zipCode(value: number | null) {
+    this._zipCode = value;
+  }
+
   get settingsOpen(): boolean {
     return this._settingsOpen;
   }
@@ -102,12 +110,14 @@ export class WeatherStore extends BaseStore {
     tempUnit: TemperatureUnit,
     speedUnit: SpeedUnit,
     precipitationUnit: PrecipitationUnit,
+    zipCode: number | null,
   ) {
     const settings = new Settings();
 
     settings.tempUnit = tempUnit;
     settings.speedUnit = speedUnit;
     settings.precipitationUnit = precipitationUnit;
+    settings.zipCode = zipCode;
 
     try {
       const response = await fetch('/api/settings', {
@@ -125,8 +135,10 @@ export class WeatherStore extends BaseStore {
       this.tempUnit = settings.tempUnit;
       this.speedUnit = settings.speedUnit;
       this.precipitationUnit = settings.precipitationUnit;
+      this.zipCode = settings.zipCode;
 
       this.settingsOpen = false;
+
       this.callEmit(WeeatherEvents.WeatherSettings);
     } catch (error) {
       console.error('Failed to save settings:', error);
