@@ -2,9 +2,10 @@ import React from 'react';
 
 import { Stack, Typography } from '@mui/material';
 
-import { CurrentWeather, DailyWeather } from '../../../shared/weather';
-import { Conversions } from '../../../shared/utilityConversions';
-import { WeatherStore } from '../../store/WeatherStore';
+import { CurrentWeather, DailyWeather } from '../../../../shared/weather';
+import { Conversions } from '../../../../shared/utilityConversions';
+import { WeatherStore } from '../../../store/WeatherStore';
+import HighLowDisplay from './HighLowDisplay';
 
 interface Props {
   store: WeatherStore;
@@ -19,16 +20,6 @@ export default class WeatherTemperatures extends React.Component<Props> {
     const { store, currentWeather: cw, dailyWeather: dw } = this.props;
     const { tempUnit, degreeSymbol } = store;
 
-    const high = Conversions.convertTempUnit(
-      Number(dw.temperature_2m_max[0]),
-      tempUnit,
-      0,
-    );
-    const low = Conversions.convertTempUnit(
-      Number(dw.temperature_2m_min[0]),
-      tempUnit,
-      0,
-    );
     const feelsLike = Conversions.convertTempUnit(
       cw.apparent_temperature,
       tempUnit,
@@ -44,7 +35,11 @@ export default class WeatherTemperatures extends React.Component<Props> {
             {degreeSymbol}
           </Typography>
         </Stack>
-        <Typography>{`${high}${degreeSymbol} / ${low}${degreeSymbol}`}</Typography>
+        <HighLowDisplay
+          store={store}
+          high={dw.temperature_2m_max[0]}
+          low={dw.temperature_2m_min[0]}
+        />
       </Stack>
     );
   }

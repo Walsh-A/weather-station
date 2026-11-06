@@ -66,8 +66,8 @@ export default class Weather extends React.Component<Props, State> {
     return (
       <>
         <Stack>
-          <WeatherAlert />
           <TimeLocationInfo store={store} />
+          <WeatherAlert />
           <WeatherNow
             store={store}
             currentWeather={cw}

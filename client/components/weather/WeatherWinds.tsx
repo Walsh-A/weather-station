@@ -2,27 +2,26 @@ import React from 'react';
 
 import { Divider, Stack, Typography } from '@mui/material';
 
-import { SpeedUnit } from '../../../shared/settings';
 import { CurrentWeather } from '../../../shared/weather';
 import { Conversions } from '../../../shared/utilityConversions';
 import WindVane from './WindVane';
+import { WeatherStore } from '../../store/WeatherStore';
 
 interface Props {
+  store: WeatherStore;
   currentWeather: CurrentWeather;
-  speedUnit: SpeedUnit;
 }
 
 export default class WeatherWinds extends React.Component<Props> {
-  private readonly degreeSymbol = '\u00B0';
-
   override render() {
-    const { currentWeather: cw, speedUnit } = this.props;
+    const { store, currentWeather: cw } = this.props;
+    const { speedUnit, degreeSymbol } = store;
 
     return (
       <Stack style={{ alignItems: 'center' }} spacing={1}>
         <Stack direction="row" sx={{ alignItems: 'center' }}>
           <WindVane currentWeather={cw} compassSize={100} />
-          <Typography>{cw.wind_direction_10m + this.degreeSymbol}</Typography>
+          <Typography>{cw.wind_direction_10m + degreeSymbol}</Typography>
         </Stack>
         <Stack direction="row" spacing={1}>
           {this.renderDisplayRow(

@@ -7,6 +7,7 @@ import { DailyWeather } from '../../../shared/weather';
 import WeatherCode from './WeatherCode';
 import WeatherItemRow from './WeatherItemRow';
 import { Conversions } from '../../../shared/utilityConversions';
+import HighLowDisplay from './temperature/HighLowDisplay';
 
 interface Props {
   store: WeatherStore;
@@ -26,7 +27,7 @@ export default class WeatherSevenDayForecast extends React.Component<
   }
 
   override render() {
-    const { dailyWeather } = this.props;
+    const { store, dailyWeather } = this.props;
 
     const {
       time,
@@ -72,7 +73,12 @@ export default class WeatherSevenDayForecast extends React.Component<
         >
           <Typography>{this.formatForecastDate(dateString)}</Typography>
           <WeatherCode weatherCode={weatherCode} />
-          {this.renderTemps(highTemperature, lowTemperature)}
+
+          <HighLowDisplay
+            store={store}
+            high={highTemperature}
+            low={lowTemperature}
+          />
           <WeatherItemRow
             label="Precip:"
             value={precipitationProbability}
@@ -104,20 +110,6 @@ export default class WeatherSevenDayForecast extends React.Component<
       month: '2-digit',
       day: '2-digit',
     });
-  }
-
-  private renderTemps(high: number, low: number) {
-    const { store } = this.props;
-    const { tempUnit, degreeSymbol } = store;
-
-    const h = Conversions.convertTempUnit(high, tempUnit, 0);
-    const l = Conversions.convertTempUnit(low, tempUnit, 0);
-
-    return (
-      <Stack direction="row">
-        <Typography>{`${h}${degreeSymbol} / ${l}${degreeSymbol}`}</Typography>
-      </Stack>
-    );
   }
 
   private formatUtcTime(timeString: string): string {
