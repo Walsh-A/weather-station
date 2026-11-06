@@ -6,14 +6,13 @@ import { CurrentWeather, DailyWeather } from '../../../../shared/weather';
 import { Conversions } from '../../../../shared/utilityConversions';
 import { WeatherStore } from '../../../store/WeatherStore';
 import HighLowDisplay from './HighLowDisplay';
+import LabelValueRow from '../../display/LabelValueRow';
 
 interface Props {
   store: WeatherStore;
   currentWeather: CurrentWeather;
   dailyWeather: DailyWeather;
 }
-
-//TODO: this should be a reusable component used in the 7 day forecast as well as the current weather
 
 export default class WeatherTemperatures extends React.Component<Props> {
   override render() {
@@ -27,7 +26,11 @@ export default class WeatherTemperatures extends React.Component<Props> {
     );
 
     return (
-      <Stack>
+      <Stack style={{ textAlign: 'center' }}>
+        <Typography variant="h3">
+          {Conversions.convertTempUnit(cw.temperature_2m, tempUnit, 0)}
+          {degreeSymbol}
+        </Typography>
         <Stack direction="row" spacing={1}>
           <Typography style={{ opacity: 0.5 }}>Feels Like</Typography>
           <Typography>
@@ -35,6 +38,10 @@ export default class WeatherTemperatures extends React.Component<Props> {
             {degreeSymbol}
           </Typography>
         </Stack>
+        <LabelValueRow
+          label="Dew Point"
+          value={`${Conversions.celsiusToFahrenheit(cw.dewpoint_2m, 0)}${degreeSymbol}`}
+        />
         <HighLowDisplay
           store={store}
           high={dw.temperature_2m_max[0]}

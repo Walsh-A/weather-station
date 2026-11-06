@@ -4,7 +4,7 @@ import { Slider, Stack, Typography } from '@mui/material';
 import { Brightness3, Sunny } from '@mui/icons-material';
 
 import { DailyWeather } from '../../../shared/weather';
-import WeatherItemRow from './WeatherItemRow';
+import LabelValueRow from '../display/LabelValueRow';
 
 interface Props {
   dailyWeather: DailyWeather;
@@ -25,27 +25,6 @@ export default class WeatherSunriseSunset extends React.Component<
   override render() {
     const { dailyWeather, sliderWidth } = this.props;
 
-    if (!sliderWidth) {
-      return (
-        <Stack>
-          <WeatherItemRow
-            label="Sunrise:"
-            value={this.getDateTime(dailyWeather?.sunrise)}
-          />
-          <WeatherItemRow
-            label="Sunset:"
-            value={this.getDateTime(dailyWeather?.sunset)}
-          />
-        </Stack>
-      );
-    }
-
-    return <Stack>{this.renderSunPositionSlider()}</Stack>;
-  }
-
-  private renderSunPositionSlider() {
-    const { dailyWeather, sliderWidth } = this.props;
-
     const sunrise = this.getTodayDateTime(dailyWeather?.sunrise ?? []);
     const sunset = this.getTodayDateTime(dailyWeather?.sunset ?? []);
 
@@ -57,7 +36,7 @@ export default class WeatherSunriseSunset extends React.Component<
     const sliderValue = Math.min(Math.max(now, min), max);
 
     return (
-      <Stack sx={{ width: sliderWidth }}>
+      <Stack sx={{ width: sliderWidth, alignSelf: 'center' }}>
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <Sunny />
           <Slider
@@ -99,28 +78,6 @@ export default class WeatherSunriseSunset extends React.Component<
         </Stack>
       </Stack>
     );
-  }
-
-  private getDateTime(dateTimeStrings: string[]) {
-    const today = new Date();
-
-    for (const dateTimeString of dateTimeStrings) {
-      const date = new Date(`${dateTimeString}Z`);
-
-      const isToday =
-        date.getFullYear() === today.getFullYear() &&
-        date.getMonth() === today.getMonth() &&
-        date.getDate() === today.getDate();
-
-      if (isToday) {
-        return date.toLocaleTimeString([], {
-          hour: 'numeric',
-          minute: '2-digit',
-        });
-      }
-    }
-
-    return '';
   }
 
   private getTodayDateTime(dateTimeStrings: string[]) {

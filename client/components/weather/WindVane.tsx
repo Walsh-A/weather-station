@@ -22,7 +22,7 @@ export default class WindVane extends React.Component<Props> {
       >
         <text
           x="32"
-          y="8"
+          y="10"
           fill="currentColor"
           fontSize="9"
           fontWeight="700"

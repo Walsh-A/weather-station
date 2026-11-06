@@ -5,9 +5,8 @@ import { Stack, Typography } from '@mui/material';
 import { WeatherStore } from '../../store/WeatherStore';
 import { DailyWeather } from '../../../shared/weather';
 import WeatherCode from './WeatherCode';
-import WeatherItemRow from './WeatherItemRow';
-import { Conversions } from '../../../shared/utilityConversions';
 import HighLowDisplay from './temperature/HighLowDisplay';
+import LabelValueRow from '../display/LabelValueRow';
 
 interface Props {
   store: WeatherStore;
@@ -79,11 +78,9 @@ export default class WeatherSevenDayForecast extends React.Component<
             high={highTemperature}
             low={lowTemperature}
           />
-          <WeatherItemRow
-            label="Precip:"
-            value={precipitationProbability}
-            unit="%"
-          />
+          <Typography variant="caption">
+            {`${precipitationProbability} %`}
+          </Typography>
           <Typography variant="caption">
             {`${this.formatUtcTime(sunriseTime)} - ${this.formatUtcTime(
               sunsetTime,
