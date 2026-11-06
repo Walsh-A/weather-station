@@ -71,6 +71,7 @@ export default class Settings extends React.Component<Props, State> {
       <Stack
         sx={{
           alignItems: 'center',
+          height: '100%',
           position: 'relative',
           width: '100%',
         }}

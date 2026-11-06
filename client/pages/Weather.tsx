@@ -90,7 +90,7 @@ export default class Weather extends React.Component<Props, State> {
     const dw: DailyWeather = weather?.daily;
 
     return (
-      <Stack>
+      <Stack sx={{ height: '100%' }}>
         <TimeLocationInfo store={store} />
         <WeatherAlert />
         <WeatherNow
@@ -111,7 +111,7 @@ export default class Weather extends React.Component<Props, State> {
     const updatedDate = new Date(`${cw.time}z`);
 
     return (
-      <Stack direction="row" spacing={1} style={{ alignSelf: 'end' }}>
+      <Stack direction="row" spacing={1} sx={{ alignSelf: 'end', mt: 'auto' }}>
         <Typography variant="caption">{`UPDATED ${updatedDate.toLocaleDateString()} ${updatedDate.toLocaleTimeString()}`}</Typography>
       </Stack>
     );
