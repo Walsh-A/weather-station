@@ -77,18 +77,3 @@ export const WeatherCodes: Record<number, string> = {
   96: 'Thunderstorm with Slight Hail',
   99: 'Thunderstorm with Heavy Hail',
 };
-
-export enum TemperatureUnit {
-  F = 'F',
-  C = 'C',
-}
-
-export enum SpeedUnit {
-  MPH = 'MPH',
-  KPH = 'KPH',
-}
-
-export enum PrecipitationUnit {
-  mm = 'mm',
-  in = 'in',
-}

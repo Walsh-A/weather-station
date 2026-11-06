@@ -1,9 +1,10 @@
 import {
+  Settings,
   PrecipitationUnit,
   SpeedUnit,
   TemperatureUnit,
-  WeatherResponse,
-} from '../../shared/weather';
+} from '../../shared/settings';
+import { WeatherResponse } from '../../shared/weather';
 import { BaseStore } from './baseStore';
 import { WeeatherEvents } from './Events';
 
@@ -12,6 +13,8 @@ export class WeatherStore extends BaseStore {
   private _tempUnit: TemperatureUnit = TemperatureUnit.F;
   private _speedUnit: SpeedUnit = SpeedUnit.MPH;
   private _precipitationUnit: PrecipitationUnit = PrecipitationUnit.in;
+
+  private _settingsOpen: boolean = false;
 
   async loadWeather() {
     try {
@@ -23,8 +26,6 @@ export class WeatherStore extends BaseStore {
 
       const data: WeatherResponse = await response.json();
 
-      //   this.setState({ weather: data });
-      //   return data;
       this.weather = data;
     } catch (err) {
       console.log(
@@ -34,6 +35,27 @@ export class WeatherStore extends BaseStore {
     }
   }
 
+  async loadSettings() {
+    try {
+      const response = await fetch('/api/settings');
+
+      if (!response.ok) {
+        throw new Error('Failed to retrieve settings.');
+      }
+
+      const settings: Settings = await response.json();
+
+      this.tempUnit = settings.tempUnit;
+      this.speedUnit = settings.speedUnit;
+      this.precipitationUnit = settings.precipitationUnit;
+
+      this.callEmit(WeeatherEvents.WeatherSettings);
+    } catch (error) {
+      console.error('Failed to load settings:', error);
+    }
+  }
+
+  // #region Getters and Setters
   get weather(): WeatherResponse {
     return this._weather;
   }
@@ -47,7 +69,6 @@ export class WeatherStore extends BaseStore {
   }
   set tempUnit(value: TemperatureUnit) {
     this._tempUnit = value;
-    this.callEmit(WeeatherEvents.WeatherSettings);
   }
 
   get speedUnit(): SpeedUnit {
@@ -55,7 +76,6 @@ export class WeatherStore extends BaseStore {
   }
   set speedUnit(value: SpeedUnit) {
     this._speedUnit = value;
-    this.callEmit(WeeatherEvents.WeatherSettings);
   }
 
   get precipitationUnit(): PrecipitationUnit {
@@ -63,11 +83,54 @@ export class WeatherStore extends BaseStore {
   }
   set precipitationUnit(value: PrecipitationUnit) {
     this._precipitationUnit = value;
-    this.callEmit(WeeatherEvents.WeatherSettings);
+  }
+
+  get settingsOpen(): boolean {
+    return this._settingsOpen;
+  }
+  set settingsOpen(value: boolean) {
+    this._settingsOpen = value;
+    this.callEmit(WeeatherEvents.WeatherSettingsOpen);
   }
 
   get degreeSymbol(): string {
     return '\u00B0';
+  }
+
+  //#region Functions
+  async saveSettings(
+    tempUnit: TemperatureUnit,
+    speedUnit: SpeedUnit,
+    precipitationUnit: PrecipitationUnit,
+  ) {
+    const settings = new Settings();
+
+    settings.tempUnit = tempUnit;
+    settings.speedUnit = speedUnit;
+    settings.precipitationUnit = precipitationUnit;
+
+    try {
+      const response = await fetch('/api/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(settings),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to save settings.');
+      }
+
+      this.tempUnit = settings.tempUnit;
+      this.speedUnit = settings.speedUnit;
+      this.precipitationUnit = settings.precipitationUnit;
+
+      this.settingsOpen = false;
+      this.callEmit(WeeatherEvents.WeatherSettings);
+    } catch (error) {
+      console.error('Failed to save settings:', error);
+    }
   }
 }
 

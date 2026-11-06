@@ -2,11 +2,8 @@ import React from 'react';
 
 import { Stack } from '@mui/material';
 
-import {
-  CurrentWeather,
-  HourlyWeather,
-  PrecipitationUnit,
-} from '../../../shared/weather';
+import { CurrentWeather, HourlyWeather } from '../../../shared/weather';
+import { PrecipitationUnit } from '../../../shared/settings';
 import { WeatherTools } from '../../../shared/weatherTools';
 import WeatherItemRow from '../../components/weather/WeatherItemRow';
 import { Conversions } from '../../../shared/utilityConversions';

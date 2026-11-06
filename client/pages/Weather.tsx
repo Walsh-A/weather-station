@@ -1,7 +1,9 @@
 import React from 'react';
 
-import { Stack, Typography } from '@mui/material';
+import { IconButton, Stack, Typography } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
 
+import Settings from '../pages/Settings';
 import { WeatherStore } from '../store/weatherStore';
 import { WeeatherEvents } from '../store/Events';
 import {
@@ -12,30 +14,40 @@ import {
 import WeatherNow from '../components/weather/WeatherNow';
 import WeatherSevenDayForecast from '../components/weather/WeatherSevenDayForecast';
 
-interface Props {
-  store: WeatherStore;
-}
+interface Props {}
 interface State {}
+
+const weatherStore = new WeatherStore();
 
 export default class Weather extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.state = {};
+    this.state = { openSettings: false };
   }
 
   override componentDidMount() {
-    const { store } = this.props;
-    store.loadWeather();
+    weatherStore.loadWeather();
+    weatherStore.loadSettings();
 
-    store.addEventListener(WeeatherEvents.WeatherUpdate, this.update);
-    store.addEventListener(WeeatherEvents.WeatherSettings, this.update);
+    weatherStore.addEventListener(WeeatherEvents.WeatherUpdate, this.update);
+    weatherStore.addEventListener(WeeatherEvents.WeatherSettings, this.update);
+    weatherStore.addEventListener(
+      WeeatherEvents.WeatherSettingsOpen,
+      this.update,
+    );
   }
 
   override componentWillUnmount() {
-    const { store } = this.props;
-    store.removeEventListener(WeeatherEvents.WeatherUpdate, this.update);
-    store.removeEventListener(WeeatherEvents.WeatherSettings, this.update);
+    weatherStore.removeEventListener(WeeatherEvents.WeatherUpdate, this.update);
+    weatherStore.removeEventListener(
+      WeeatherEvents.WeatherSettings,
+      this.update,
+    );
+    weatherStore.removeEventListener(
+      WeeatherEvents.WeatherSettingsOpen,
+      this.update,
+    );
   }
 
   private update = () => {
@@ -43,24 +55,36 @@ export default class Weather extends React.Component<Props, State> {
   };
 
   override render() {
-    const { store } = this.props;
-    const { weather } = store;
+    const { settingsOpen } = weatherStore;
+
+    if (settingsOpen) {
+      return <Settings store={weatherStore} />;
+    }
+
+    return this.renderWeatherContent();
+  }
+
+  private renderWeatherContent() {
+    const { weather } = weatherStore;
 
     const cw: CurrentWeather = weather?.current;
     const hw: HourlyWeather = weather?.hourly;
     const dw: DailyWeather = weather?.daily;
 
     return (
-      <Stack>
-        <WeatherNow
-          store={store}
-          currentWeather={cw}
-          hourlyWeather={hw}
-          dailyWeather={dw}
-        />
-        <WeatherSevenDayForecast store={store} dailyWeather={dw} />
-        {this.renderLastUpdated(cw)}
-      </Stack>
+      <>
+        <Stack>
+          <WeatherNow
+            store={weatherStore}
+            currentWeather={cw}
+            hourlyWeather={hw}
+            dailyWeather={dw}
+          />
+          <WeatherSevenDayForecast store={weatherStore} dailyWeather={dw} />
+          {this.renderLastUpdated(cw)}
+        </Stack>
+        {this.renderSettingsButton()}
+      </>
     );
   }
 
@@ -73,6 +97,16 @@ export default class Weather extends React.Component<Props, State> {
       <Stack direction="row" spacing={1} style={{ alignSelf: 'end' }}>
         <Typography variant="caption">{`UPDATED ${updatedDate.toLocaleDateString()} ${updatedDate.toLocaleTimeString()}`}</Typography>
       </Stack>
+    );
+  }
+
+  private renderSettingsButton() {
+    const { settingsOpen } = weatherStore;
+
+    return (
+      <IconButton onClick={() => (weatherStore.settingsOpen = !settingsOpen)}>
+        <SettingsIcon />
+      </IconButton>
     );
   }
 }

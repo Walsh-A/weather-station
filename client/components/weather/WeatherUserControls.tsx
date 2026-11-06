@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+  Button,
   Stack,
   ToggleButton,
   ToggleButtonGroup,
@@ -11,7 +12,7 @@ import {
   PrecipitationUnit,
   SpeedUnit,
   TemperatureUnit,
-} from '../../../shared/weather';
+} from '../../../shared/settings';
 import { WeatherStore } from '../../store/weatherStore';
 import { WeeatherEvents } from '../../store/Events';
 
@@ -19,7 +20,25 @@ interface Props {
   store: WeatherStore;
 }
 
-export default class WeatherUserControls extends React.Component<Props> {
+interface State {
+  tempUnit: TemperatureUnit;
+  speedUnit: SpeedUnit;
+  precipitationUnit: PrecipitationUnit;
+}
+
+export default class WeatherUserControls extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    const { store } = props;
+
+    this.state = {
+      tempUnit: store.tempUnit,
+      speedUnit: store.speedUnit,
+      precipitationUnit: store.precipitationUnit,
+    };
+  }
+
   override componentDidMount() {
     const { store } = this.props;
     store.addEventListener(WeeatherEvents.WeatherSettings, this.update);
@@ -31,22 +50,28 @@ export default class WeatherUserControls extends React.Component<Props> {
   }
 
   private update = () => {
-    this.forceUpdate();
+    const { store } = this.props;
+
+    this.setState({
+      tempUnit: store.tempUnit,
+      speedUnit: store.speedUnit,
+      precipitationUnit: store.precipitationUnit,
+    });
   };
 
   override render() {
     return (
-      <Stack spacing={1}>
+      <Stack spacing={1} sx={{ alignSelf: 'center', width: 'fit-content' }}>
         {this.renderTempUnitToggle()}
         {this.renderSpeedUnitToggle()}
         {this.renderPrecipitationToggle()}
+        {this.renderButtons()}
       </Stack>
     );
   }
 
   private renderTempUnitToggle() {
-    const { store } = this.props;
-    const { tempUnit } = store;
+    const { tempUnit } = this.state;
     const tempUnits = Object.values(TemperatureUnit);
 
     return this.renderLabelAndToggleRow(
@@ -55,15 +80,14 @@ export default class WeatherUserControls extends React.Component<Props> {
         tempUnits,
         tempUnit,
         (value: TemperatureUnit) => {
-          store.tempUnit = value;
+          this.setState({ tempUnit: value });
         },
       ),
     );
   }
 
   private renderSpeedUnitToggle() {
-    const { store } = this.props;
-    const { speedUnit } = store;
+    const { speedUnit } = this.state;
     const speedUnits = Object.values(SpeedUnit);
 
     return this.renderLabelAndToggleRow(
@@ -72,15 +96,14 @@ export default class WeatherUserControls extends React.Component<Props> {
         speedUnits,
         speedUnit,
         (value: SpeedUnit) => {
-          store.speedUnit = value;
+          this.setState({ speedUnit: value });
         },
       ),
     );
   }
 
   private renderPrecipitationToggle() {
-    const { store } = this.props;
-    const { precipitationUnit } = store;
+    const { precipitationUnit } = this.state;
     const precipitationUnits = Object.values(PrecipitationUnit);
 
     return this.renderLabelAndToggleRow(
@@ -89,9 +112,46 @@ export default class WeatherUserControls extends React.Component<Props> {
         precipitationUnits,
         precipitationUnit,
         (value: PrecipitationUnit) => {
-          store.precipitationUnit = value;
+          this.setState({ precipitationUnit: value });
         },
       ),
+    );
+  }
+
+  private renderButtons() {
+    const { store } = this.props;
+    const { tempUnit, speedUnit, precipitationUnit } = this.state;
+
+    return (
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{ justifyContent: 'center', pt: 0.5 }}
+      >
+        <Button
+          variant="outlined"
+          sx={{
+            borderColor: 'black',
+            color: 'black',
+          }}
+          onClick={() => (store.settingsOpen = false)}
+        >
+          Cancel
+        </Button>
+        <Button
+          disableElevation
+          variant="contained"
+          sx={{
+            backgroundColor: 'black',
+            color: 'white',
+          }}
+          onClick={() =>
+            void store.saveSettings(tempUnit, speedUnit, precipitationUnit)
+          }
+        >
+          Save
+        </Button>
+      </Stack>
     );
   }
 

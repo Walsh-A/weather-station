@@ -4,6 +4,7 @@
     "module": "preserve",
     "moduleResolution": "bundler",
     "jsx": "react-jsx",
+    "types": ["node"],
     "strict": true,
     "noImplicitOverride": true,
     "noUncheckedIndexedAccess": true,

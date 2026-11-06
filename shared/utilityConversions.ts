@@ -1,4 +1,4 @@
-import { PrecipitationUnit, SpeedUnit, TemperatureUnit } from './weather';
+import { PrecipitationUnit, SpeedUnit, TemperatureUnit } from './settings';
 
 export class Conversions {
   // #region Temperature

@@ -2,7 +2,8 @@ import React from 'react';
 
 import { Divider, Stack, Typography } from '@mui/material';
 
-import { CurrentWeather, SpeedUnit } from '../../../shared/weather';
+import { SpeedUnit } from '../../../shared/settings';
+import { CurrentWeather } from '../../../shared/weather';
 import { Conversions } from '../../../shared/utilityConversions';
 import WindVane from './WindVane';
 
