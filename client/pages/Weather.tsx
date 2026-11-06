@@ -111,7 +111,11 @@ export default class Weather extends React.Component<Props, State> {
     const updatedDate = new Date(`${cw.time}z`);
 
     return (
-      <Stack direction="row" spacing={1} sx={{ alignSelf: 'end', mt: 'auto' }}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{ alignSelf: 'end', mt: 'auto', mr: 1, opacity: 0.5 }}
+      >
         <Typography variant="caption">{`UPDATED ${updatedDate.toLocaleDateString()} ${updatedDate.toLocaleTimeString()}`}</Typography>
       </Stack>
     );

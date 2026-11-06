@@ -68,11 +68,11 @@ export default class WeatherSevenDayForecast extends React.Component<
             border: '1px solid #000',
             borderRadius: 4,
             alignItems: 'center',
+            minWidth: 90,
           }}
         >
           <Typography>{this.formatForecastDate(dateString)}</Typography>
           <WeatherCode weatherCode={weatherCode} />
-
           <HighLowDisplay
             store={store}
             high={highTemperature}
