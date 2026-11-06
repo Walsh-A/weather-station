@@ -4,7 +4,7 @@ import { Stack, Typography } from '@mui/material';
 
 import { CurrentWeather, DailyWeather } from '../../../shared/weather';
 import { Conversions } from '../../../shared/utilityConversions';
-import { WeatherStore } from '../../store/weatherStore';
+import { WeatherStore } from '../../store/WeatherStore';
 
 interface Props {
   store: WeatherStore;

@@ -5,6 +5,20 @@ import { Settings } from '../../shared/settings';
 
 const settingsPath = path.resolve('config/settings.json');
 
+export async function getConfiguredZipCode(): Promise<string> {
+  const settings = await getSettings();
+  const { zipCode } = settings;
+
+  if (!zipCode) {
+    throw new Error('no zip code has been configured');
+  }
+  if (!/^\d{5}$/.test(zipCode)) {
+    throw new Error('Configured ZIP code must be 5 digits.');
+  }
+
+  return zipCode;
+}
+
 export async function getSettings(): Promise<Settings> {
   try {
     const file = await fs.readFile(settingsPath, 'utf-8');

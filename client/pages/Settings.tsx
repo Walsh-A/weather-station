@@ -9,14 +9,14 @@ import {
   Typography,
 } from '@mui/material';
 
-import { WeatherStore } from '../store/weatherStore';
 import {
   PrecipitationUnit,
   SpeedUnit,
   TemperatureUnit,
 } from '../../shared/settings';
 import { WeeatherEvents } from '../store/Events';
-import NumberTextField from '../components/NumberTextField';
+import ZipCodeInput from '../components/settings/ZipCodeInput';
+import { WeatherStore } from '../store/WeatherStore';
 
 interface Props {
   store: WeatherStore;
@@ -25,7 +25,7 @@ interface State {
   tempUnit: TemperatureUnit;
   speedUnit: SpeedUnit;
   precipitationUnit: PrecipitationUnit;
-  zipCode: number | null;
+  zipCode: string | null;
 }
 
 export default class Settings extends React.Component<Props, State> {
@@ -64,6 +64,9 @@ export default class Settings extends React.Component<Props, State> {
   };
 
   override render() {
+    const { store } = this.props;
+    const { zipCode } = this.state;
+
     return (
       <Stack
         sx={{
@@ -74,35 +77,23 @@ export default class Settings extends React.Component<Props, State> {
       >
         <Stack spacing={1} sx={{ maxWidth: 452, width: '100%' }}>
           <Typography variant="h2" sx={{ textAlign: 'center' }}>
-            Weather Settings
+            Settings
           </Typography>
           <Divider />
           <Stack spacing={1} sx={{ alignSelf: 'center', width: 'fit-content' }}>
-            {this.renderZipCode()}
+            <ZipCodeInput
+              store={store}
+              zipCode={zipCode}
+              handleChange={(zip: string | null) =>
+                this.setState({ zipCode: zip })
+              }
+            />
             {this.renderTempUnitToggle()}
             {this.renderSpeedUnitToggle()}
             {this.renderPrecipitationToggle()}
             {this.renderButtons()}
           </Stack>
         </Stack>
-      </Stack>
-    );
-  }
-
-  private renderZipCode() {
-    const { zipCode } = this.state;
-
-    return (
-      <Stack direction="row" sx={{ alignItems: 'center' }} spacing={1}>
-        <Typography>Zip Code</Typography>
-        <NumberTextField
-          value={zipCode}
-          validate={(value: string) => value.length === 5}
-          onValid={(value: number) => this.setState({ zipCode: value })}
-          correctError={() => zipCode}
-          clearOnFocus={true}
-          // style?: CSSProperties;
-        />
       </Stack>
     );
   }

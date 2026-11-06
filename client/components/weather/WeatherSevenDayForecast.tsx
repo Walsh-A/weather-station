@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Stack, Typography } from '@mui/material';
 
-import { WeatherStore } from '../../store/weatherStore';
+import { WeatherStore } from '../../store/WeatherStore';
 import { DailyWeather } from '../../../shared/weather';
 import WeatherCode from './WeatherCode';
 import WeatherItemRow from './WeatherItemRow';

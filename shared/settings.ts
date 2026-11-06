@@ -2,7 +2,7 @@ export class Settings {
   tempUnit: TemperatureUnit = TemperatureUnit.F;
   speedUnit: SpeedUnit = SpeedUnit.MPH;
   precipitationUnit: PrecipitationUnit = PrecipitationUnit.in;
-  zipCode: number | null = null;
+  zipCode: string | null = null;
 }
 
 export enum TemperatureUnit {
@@ -18,4 +18,12 @@ export enum SpeedUnit {
 export enum PrecipitationUnit {
   mm = 'mm',
   in = 'in',
+}
+
+export interface LocationResponse {
+  name: string;
+  latitude: number;
+  longitude: number;
+  state: string;
+  zipCode: string;
 }

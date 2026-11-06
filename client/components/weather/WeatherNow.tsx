@@ -6,7 +6,7 @@ import WeatherTemperatures from '../../components/weather/WeatherTemperatures';
 import WeatherWinds from '../../components/weather/WeatherWinds';
 import WeatherPrecipitation from '../../components/weather/WeatherPrecipitation';
 import WeatherCode from '../../components/weather/WeatherCode';
-import { WeatherStore } from '../../store/weatherStore';
+import { WeatherStore } from '../../store/WeatherStore';
 import WeatherSunriseSunset from '../../components/weather/WeatherSunriseSunset';
 import { WeeatherEvents } from '../../store/Events';
 import {

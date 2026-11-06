@@ -1,9 +1,7 @@
 import React from 'react';
 
 import Weather from './pages/Weather';
-import WeatherAlert from './pages/WeatherAlerts';
 import DisplayFrame from './components/weather/DisplayFrame';
-import TodayInfo from './components/TodayInfo';
 
 interface Props {}
 interface State {}
@@ -15,13 +13,13 @@ export default class App extends React.Component<Props, State> {
     this.state = {};
   }
 
-  override componentDidMount() {}
+  // override componentDidMount() {
+  //   void weatherStore.loadLocation();
+  // }
 
   override render() {
     return (
       <DisplayFrame>
-        <WeatherAlert />
-        <TodayInfo />
         <Weather />
       </DisplayFrame>
     );

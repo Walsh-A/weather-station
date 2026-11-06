@@ -1,6 +1,7 @@
 import {
-  Settings,
+  LocationResponse,
   PrecipitationUnit,
+  Settings,
   SpeedUnit,
   TemperatureUnit,
 } from '../../shared/settings';
@@ -9,13 +10,26 @@ import { BaseStore } from './baseStore';
 import { WeeatherEvents } from './Events';
 
 export class WeatherStore extends BaseStore {
+  private _location: LocationResponse | null = null;
   private _weather: WeatherResponse = new WeatherResponse();
   private _tempUnit: TemperatureUnit = TemperatureUnit.F;
   private _speedUnit: SpeedUnit = SpeedUnit.MPH;
   private _precipitationUnit: PrecipitationUnit = PrecipitationUnit.in;
-  private _zipCode: number | null = null;
+  private _zipCode: string | null = null;
 
   private _settingsOpen: boolean = false;
+
+  async loadData() {
+    const promises = [
+      () => this.loadSettings(),
+      () => this.loadLocation(),
+      () => this.loadWeather(),
+    ];
+
+    for (const promise of promises) {
+      await promise();
+    }
+  }
 
   async loadWeather() {
     try {
@@ -49,6 +63,7 @@ export class WeatherStore extends BaseStore {
       this.tempUnit = settings.tempUnit;
       this.speedUnit = settings.speedUnit;
       this.precipitationUnit = settings.precipitationUnit;
+      this.zipCode = settings.zipCode;
 
       this.callEmit(WeeatherEvents.WeatherSettings);
     } catch (error) {
@@ -56,7 +71,31 @@ export class WeatherStore extends BaseStore {
     }
   }
 
+  async loadLocation() {
+    try {
+      const response = await fetch('/api/location');
+
+      if (!response.ok) {
+        throw new Error('Failed to retrieve location.');
+      }
+
+      const location: LocationResponse = await response.json();
+
+      this.location = location;
+    } catch (error) {
+      console.error('Failed to load location:', error);
+    }
+  }
+
   // #region Getters and Setters
+  get location(): LocationResponse | null {
+    return this._location;
+  }
+  set location(value: LocationResponse | null) {
+    this._location = value;
+    this.callEmit(WeeatherEvents.WeatherLocation);
+  }
+
   get weather(): WeatherResponse {
     return this._weather;
   }
@@ -86,10 +125,10 @@ export class WeatherStore extends BaseStore {
     this._precipitationUnit = value;
   }
 
-  get zipCode(): number | null {
+  get zipCode(): string | null {
     return this._zipCode;
   }
-  set zipCode(value: number | null) {
+  set zipCode(value: string | null) {
     this._zipCode = value;
   }
 
@@ -110,7 +149,7 @@ export class WeatherStore extends BaseStore {
     tempUnit: TemperatureUnit,
     speedUnit: SpeedUnit,
     precipitationUnit: PrecipitationUnit,
-    zipCode: number | null,
+    zipCode: string | null,
   ) {
     const settings = new Settings();
 
@@ -140,6 +179,8 @@ export class WeatherStore extends BaseStore {
       this.settingsOpen = false;
 
       this.callEmit(WeeatherEvents.WeatherSettings);
+      void this.loadLocation();
+      void this.loadWeather();
     } catch (error) {
       console.error('Failed to save settings:', error);
     }
