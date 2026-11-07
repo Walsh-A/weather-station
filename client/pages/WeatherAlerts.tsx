@@ -32,7 +32,7 @@ export default class WeatherAlert extends React.Component<Props, State> {
 
     this.state = {
       weatherAlerts: new NwsAlertCollection(),
-      // weatherAlerts: fakeWeatherAlerts,
+      // weatherAlerts: fakeWeatherAlerts, // here for testing alert bar
       currentAlertIndex: 0,
     };
   }
