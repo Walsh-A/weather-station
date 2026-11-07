@@ -21,8 +21,14 @@ interface State {
 }
 
 const store = new WeatherStore();
+// api updates data every 15 minutes on the hour
+// wait one minute after that to pull data again
+const WEATHER_REFRESH_INTERVAL_MINUTES = 15;
+const WEATHER_REFRESH_DELAY_MINUTES = 1;
 
 export default class Weather extends React.Component<Props, State> {
+  private weatherRefreshTimer: number | undefined;
+
   override state: State = {
     alertsVisible: false,
   };
@@ -34,6 +40,7 @@ export default class Weather extends React.Component<Props, State> {
     store.addEventListener(WeeatherEvents.WeatherSettings, this.update);
     store.addEventListener(WeeatherEvents.WeatherSettingsOpen, this.update);
     window.addEventListener('keydown', this.handleKeyDown);
+    this.scheduleWeatherRefresh();
   }
 
   override componentWillUnmount() {
@@ -41,10 +48,44 @@ export default class Weather extends React.Component<Props, State> {
     store.removeEventListener(WeeatherEvents.WeatherSettings, this.update);
     store.removeEventListener(WeeatherEvents.WeatherSettingsOpen, this.update);
     window.removeEventListener('keydown', this.handleKeyDown);
+
+    if (this.weatherRefreshTimer !== undefined) {
+      window.clearTimeout(this.weatherRefreshTimer);
+    }
   }
 
   private update = () => {
     this.forceUpdate();
+  };
+
+  private scheduleWeatherRefresh = () => {
+    const now = new Date();
+    const nextRefresh = new Date(now);
+    const currentQuarter = Math.floor(
+      now.getMinutes() / WEATHER_REFRESH_INTERVAL_MINUTES,
+    );
+
+    nextRefresh.setSeconds(0, 0);
+    nextRefresh.setMinutes(
+      currentQuarter * WEATHER_REFRESH_INTERVAL_MINUTES +
+        WEATHER_REFRESH_DELAY_MINUTES,
+    );
+
+    if (nextRefresh.getTime() <= now.getTime()) {
+      nextRefresh.setMinutes(
+        nextRefresh.getMinutes() + WEATHER_REFRESH_INTERVAL_MINUTES,
+      );
+    }
+
+    this.weatherRefreshTimer = window.setTimeout(
+      this.refreshWeather,
+      nextRefresh.getTime() - now.getTime(),
+    );
+  };
+
+  private refreshWeather = () => {
+    this.scheduleWeatherRefresh();
+    void store.loadWeather();
   };
 
   private handleAlertVisibilityChange = (alertsVisible: boolean) => {
