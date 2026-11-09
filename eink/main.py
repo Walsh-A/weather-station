@@ -1,23 +1,10 @@
 from PIL import Image, ImageDraw, ImageFont
 
+from datetime import datetime   
+from header import draw_header
 
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 480
-
-
-def draw_header(
-    draw: ImageDraw.ImageDraw,
-    date_string: str,
-    time_string: str,
-    location: str,
-):
-    font = ImageFont.load_default()
-
-    draw.text((10, 8), time_string, font=font, fill=0)
-    draw.text((300, 8), date_string, font=font, fill=0)
-    draw.text((675, 8), location, font=font, fill=0)
-    draw.line((0, 32, DISPLAY_WIDTH, 32), fill=0, width=1)
-
 
 def draw_current_weather(
     draw: ImageDraw.ImageDraw,
@@ -38,6 +25,11 @@ def draw_current_weather(
 
 
 def main():
+    now = datetime.now()
+
+    time_string = now.strftime("%I:%M %p").lstrip("0")
+    date_string = now.strftime("%A, %B %d, %Y").replace(" 0", " ")
+
     image = Image.new(
         "1",
         (DISPLAY_WIDTH, DISPLAY_HEIGHT),
@@ -48,8 +40,9 @@ def main():
 
     draw_header(
         draw,
-        "Monday, November 9, 2026",
-        "1:40 PM",
+        DISPLAY_WIDTH,
+        date_string,
+        time_string,
         "Columbus, Ohio",
     )
 
