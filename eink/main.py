@@ -2,6 +2,8 @@ from PIL import Image, ImageDraw
 
 from datetime import datetime   
 
+from services.weather_service import get_current_weather
+
 from header import draw_header
 from current_weather import draw_current_weather
 
@@ -13,6 +15,11 @@ def main():
 
     time_string = now.strftime("%I:%M %p").lstrip("0")
     date_string = now.strftime("%A, %B %d, %Y").replace(" 0", " ")
+
+    weather: dict = get_current_weather(39.96, -82.99)
+    current: dict = weather['current']
+
+    
 
     image = Image.new(
         "1",
@@ -33,11 +40,7 @@ def main():
     draw_current_weather(
         draw,
         DISPLAY_WIDTH,
-        "58°",
-        "Clear Sky",
-        "52°",
-        "48%",
-        "8.08 MPH",
+        current
     )
 
     image.save("weather.png")

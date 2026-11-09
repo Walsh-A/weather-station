@@ -25,6 +25,8 @@ export default class WeatherTemperatures extends React.Component<Props> {
       0,
     );
 
+    // todo need to add the unit to the right of the temperature
+
     return (
       <Stack style={{ textAlign: 'center' }}>
         <Typography variant="h3">
