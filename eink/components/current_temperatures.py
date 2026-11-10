@@ -20,7 +20,15 @@ def draw_current_temperatures(
     draw.text((200, 50), f"Temperature: {temperature}{degreeSymbol} C", font=font, fill=0)
     draw.text((200, 75), f"Feels Like: {feels_like}{degreeSymbol}", font=font, fill=0)
     draw.text((200, 100), f"Dew Point: {dew_point}{degreeSymbol}", font=font, fill=0)
-    draw.text((200, 125), f"{high_temp}{degreeSymbol} / {low_temp}{degreeSymbol}", font=font, fill=0)
+    draw_high_low_temperatures(draw, high_temp, low_temp, 200, 125)
+    
+
+def draw_high_low_temperatures(draw: ImageDraw.ImageDraw, high_temp: float, low_temp: float, x: float, y: float):
+    font = ImageFont.load_default()
+    degreeSymbol: str = '\u00B0'
+
+    draw.text((x, y), f"{high_temp}{degreeSymbol} / {low_temp}{degreeSymbol}", font=font, fill=0)
+
 
     
 

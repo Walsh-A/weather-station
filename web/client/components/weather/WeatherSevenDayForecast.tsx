@@ -6,7 +6,6 @@ import { WeatherStore } from '../../store/WeatherStore';
 import { DailyWeather } from '../../../shared/weather';
 import WeatherCode from './WeatherCode';
 import HighLowDisplay from './temperature/HighLowDisplay';
-import LabelValueRow from '../display/LabelValueRow';
 
 interface Props {
   store: WeatherStore;

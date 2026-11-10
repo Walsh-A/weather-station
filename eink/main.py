@@ -6,6 +6,7 @@ from services.weather_service import get_current_weather
 
 from components.header import draw_header
 from components.current_weather import draw_current_weather
+from components.seven_day_forecast import draw_seven_day_forecast
 
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 480
@@ -44,6 +45,8 @@ def main():
         daily_w,
         hourly_w
     )
+
+    draw_seven_day_forecast(draw, DISPLAY_WIDTH, daily_w)
 
     image.save("weather.png")
 
