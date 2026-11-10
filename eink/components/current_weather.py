@@ -3,9 +3,7 @@ from PIL import ImageDraw, ImageFont
 from shared.weather_codes import get_weather_description
 from components.current_temperatures import draw_current_temperatures
 from components.middle_data_display import draw_middle_data
-
-DISPLAY_WIDTH = 800
-DISPLAY_HEIGHT = 480
+from components.current_wind import draw_current_winds
 
 def draw_current_weather(
     draw: ImageDraw.ImageDraw,
@@ -25,4 +23,5 @@ def draw_current_weather(
     draw.text((25, 75), f"Weather Code: {weather_code} - {weather_code_description}", font=font, fill=0)
     draw_current_temperatures(draw, display_width, current_w, dailly_w)
     draw_middle_data(draw, display_width, current_w, hourly_w)
+    draw_current_winds(draw, display_width, current_w)
 

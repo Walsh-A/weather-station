@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Divider, Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import { CurrentWeather } from '../../../shared/weather';
 import { Conversions } from '../../../shared/utilityConversions';
