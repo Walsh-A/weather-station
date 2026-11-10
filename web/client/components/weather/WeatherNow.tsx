@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import WeatherTemperatures from './temperature/WeatherTemperatures';
 import WeatherWinds from '../../components/weather/WeatherWinds';

@@ -4,8 +4,8 @@ from datetime import datetime
 
 from services.weather_service import get_current_weather
 
-from header import draw_header
-from current_weather import draw_current_weather
+from components.header import draw_header
+from components.current_weather import draw_current_weather
 
 DISPLAY_WIDTH = 800
 DISPLAY_HEIGHT = 480
@@ -17,9 +17,9 @@ def main():
     date_string = now.strftime("%A, %B %d, %Y").replace(" 0", " ")
 
     weather: dict = get_current_weather(39.96, -82.99)
-    current: dict = weather['current']
-
-    
+    current_w: dict = weather['current']
+    daily_w: dict = weather['daily']
+    hourly_w: dict = weather['hourly']
 
     image = Image.new(
         "1",
@@ -40,7 +40,9 @@ def main():
     draw_current_weather(
         draw,
         DISPLAY_WIDTH,
-        current
+        current_w,
+        daily_w,
+        hourly_w
     )
 
     image.save("weather.png")

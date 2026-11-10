@@ -3,3 +3,4 @@ dist/
 *.tsbuildinfo
 /config/settings.json
 .venv/
+weather.png
