@@ -23,6 +23,6 @@ def draw_current_weather(
     weather_code_description: str = get_weather_description(weather_code)
         
     draw.text((25, 75), f"Weather Code: {weather_code} - {weather_code_description}", font=font, fill=0)
-    draw_current_temperatures(draw, display_width, current_w)
+    draw_current_temperatures(draw, display_width, current_w, dailly_w)
     draw_middle_data(draw, display_width, current_w, hourly_w)
 
